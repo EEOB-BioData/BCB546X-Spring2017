@@ -1,4 +1,4 @@
-# Biology Data Skills
+# Computational Skills for Biological Data
 
 ## Iowa State University
 
