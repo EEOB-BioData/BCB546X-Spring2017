@@ -218,7 +218,7 @@ Host speedy
 ```
 --
 
-With the host names in the `.config` file, I don't have to type the whole URI to log in:
+With the host names in the `.ssh/config` file, I don't have to type the whole URI to log in:
 
 ```
 $ ssh phylo@speedy 
@@ -680,6 +680,17 @@ contributor and give you push rights (it is recommended that you discuss the nat
 Let's create a new Git repository and host it on GitHub using our accounts (for the demo, 
 I will create the repo in the [EEOB-BioData](https://github.com/EEOB-BioData) organization
 so that everyone will have easy access to it).
+
+<br>
+
+--
+
+But first, let's tell Git who you are
+
+```
+$ git config --global user.name "Ada Lovelace"
+$ git config --global user.email "adal@analyticalengine.com"
+```
 
 ---
 
