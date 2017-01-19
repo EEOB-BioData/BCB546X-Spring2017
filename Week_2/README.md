@@ -12,4 +12,4 @@ The lecture notes are in the file called `lecture_19Jan-TAH.html`.
 
 This was edited by Tracy today. [link](https://github.com/)
 
-Another edit by tracy
+Another *BAD* edit by tracy
