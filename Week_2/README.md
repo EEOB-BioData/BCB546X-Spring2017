@@ -13,4 +13,4 @@ The lecture notes are in the file called `lecture_19Jan-TAH.html`.
 This was edited by Tracy today. [link](https://github.com/)
 
 
-Another *BAD* edit by tracy. Because merge conflicts are fun.
+Another **BAD** edit by tracy. Because merge conflicts are fun.
