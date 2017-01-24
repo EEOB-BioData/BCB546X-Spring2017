@@ -106,6 +106,8 @@ Notes for the _first_ slide!
 * Using wildcards
 * Revisiting the Pipe and behold, `grep`!
 * Redirecting streams in pipes
+* Managing processes
+* Checking process exit status
 
 ---
 
@@ -193,7 +195,7 @@ $ mkdir data/seqs scripts analysis
 
 --
 
-* Let's user our GUI to create a folder in `zmays-snps` with a space in its name:
+* Let's use our GUI to create a folder in `zmays-snps` with a space in its name:
 
 `raw sequences`
 
@@ -253,7 +255,7 @@ $ mkdir -p zmays-snps/{data/seqs,scripts,analysis}
 
 --
 
-* Note the use of the `-p` flag for the `mkdir` command which allows for creation of subdirectories
+* Note the use of the `-p` option for the `mkdir` command which allows for creation of intermediate directories as required
 
 --
 
@@ -269,7 +271,7 @@ $ touch seqs/zmays{A,B,C}_R{1,2}.fastq
 
 ## Wildcards can make your life easier too!
 
-* Navigate into your `seqs` folder and use the `ls` command in combination with the `*` and `?` wildcards
+* Navigate into your `seqs` folder and use the `ls` command in combination with the `*` and `?` wildcards to match subsets of the files we just created
 
 --
 
@@ -307,6 +309,8 @@ $ rm -rf tmp-data/aligned-reads *
 ---
 
 ##Revisiting the Pipe
+
+--
 
 * In this example, how are standard out and standard error streams being funneled?
 
@@ -348,7 +352,7 @@ $ grep -v "^>" tb1.fasta | grep --color -i "[^ATGC]"
 
 --
 
-* Which program failed?
+* Which program had the issue printed to standard error?
 
 --
 
@@ -363,7 +367,7 @@ $ program1 input.txt 2> program1.stderr | \
 
 --
 
-* But what if we want to send our standard out and standard error to the same place?
+* But what if we want to send our standard output and standard error to the same place?
 
 --
 
@@ -547,7 +551,7 @@ $ program1 input.txt > intermediate-results.txt || \
 
 --
 
-* Try the following commands and see if what they returns makes sense to you:
+* Try the following commands and see if what they return makes sense to you:
 
 ```
 $ true && echo "first command was a success"
