@@ -88,6 +88,7 @@
 class: center, middle
 
 # Delving more deeply into UNIX
+## Buffalo Chapter 3
 
 ???
 
@@ -559,6 +560,43 @@ $ true || echo "first command was not a success"
 $ false || echo "first command was not a success"
 $ false && echo "first command was a success"
 ```
+---
+
+## Command substitution:
+
+--
+
+* Sometimes rather than piping, we may actually want to nest commands within other commands
+
+--
+
+* This process is called "command substitution" and here are a few examples...
+
+--
+
+* `cd` into the `chapter-03-remedial-unix` folder of your Buffalo online materials and in your terminal type:
+
+```
+$ echo "There are $(grep -cv '^>' tb1.fasta) lines of sequence in my FASTA file."
+```
+--
+
+* What is the result, and what's going on here?
+
+--
+
+* Now `cd` into your `Week_3_play` folder and try:
+
+--
+
+```
+$ mkdir results-$(date +%F)
+$ ls
+```
+
+--
+
+* You can name folders and files with today's date without even knowing what that is!
 
 
     </textarea>
