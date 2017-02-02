@@ -5,7 +5,7 @@ Your UNIX assignment will consist of two components:
 1. Inspection of data files
 2. Processing of these same data files to produce output files that are formatted for a subsequent analysis
 
-Please document your work in a version-controlled repository using `git`.  Your repository should include a `README.md` file in Markdown format that describes your workflow for both data inspection and processing and the files you will create as described below. When you are ready to turn in your workflow and files, please send a url linking to the GitHub or Bitbucket repository you have created via a Slack direct message to all three instructors.
+Please document your work in a version-controlled repository using `git`.  Your repository should include a `README.md` file in Markdown format that describes your workflow for both data inspection and processing and the files you will create as described below. When you are ready to turn in your workflow and files, please send a url linking to the GitHub (public) or Bitbucket (private) repository you have created via a Slack direct message to all three instructors (if submitting a private repository, invite instructors to the repositroy).
 
 ##_Data Inspection_
 
