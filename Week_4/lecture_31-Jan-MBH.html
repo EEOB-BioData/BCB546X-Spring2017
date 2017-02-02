@@ -120,7 +120,7 @@ Notes for the _first_ slide!
 
 --
 
-## Here, we'll learn a number of UNIX tools that will allow us to inspect and manipulate data
+## Here, we'll learn a number of UNIX tools that will allow us to inspect and process data
 
 ---
 
@@ -827,6 +827,283 @@ $ grep -v "^#" Mus_musculus.GRCm38.75_chr1.gtf | cut -f3,7 | sort | uniq -c
 $ grep "ENSMUSG00000033793" Mus_musculus.GRCm38.75_chr1.gtf | cut -f3 | sort \
 	 | uniq -c
 ```
+
+---
+
+## Merging the contents of two files with the program `join`
+
+--
+
+* The contents of two files can be merged by joining the files based on a common column
+
+--
+
+* In the following two files, what would be the common column to use for a join?
+
+```
+$ cat example.bed
+
+$ cat example_lengths.txt
+```
+--
+
+* In order to complete the join, we must first sort _both_ files on the common column
+
+```
+$ sort -k1,1 example.bed > example_sorted.bed
+
+$ sort -c -k1,1 example_lengths.txt
+```
+--
+
+* Let's talk through the following syntax to make sure it's clear:
+
+```
+$ join -1 1 -2 1 example_sorted.bed example_lengths.txt > example_with_lengths.txt
+```
+---
+
+## Merging the contents of two files with the program `join`
+
+--
+
+* Let's also look at the number of lines in our files to see if the join was complete:
+
+```
+$ wc -l example_sorted.bed example_lengths.txt example_with_lengths.txt
+```
+--
+
+* Now let's see what happens when there is not complete overlap in our common columns:
+
+```
+$ head -n2 example_lengths.txt > example_lengths_alt.txt
+
+$ join -1 1 -2 1 example_sorted.bed example_lengths_alt.txt
+
+$ join -1 1 -2 1 example_sorted.bed example_lengths_alt.txt | wc -l
+```
+--
+
+* Because chr3 is absent from the `example_lengths_alt.txt` file, it is omitted entirely from the join
+
+--
+
+* The GNU `join` option `-a` allows us to include these "unpairable" lines in our output file:
+
+```
+$ gjoin -1 1 -2 1 -a 1 example_sorted.bed example_lengths_alt.txt
+```
+---
+
+## Processing data with the `awk` programming language
+
+--
+
+* Unlike the UNIX programs we've been learning, `awk` is a full-fledged programming language
+
+--
+
+* `awk` is simpler then `python` and not built for complicated tasks, but it's great for quick data-processing tasks
+
+--
+
+* To learn `awk` we must understand how it:
+	1. Processes records
+	
+	2. Uses pattern-action pairs
+	
+--
+
+* `Awk` processes data a record at a time and records are composed of fields
+
+--
+
+* `Awk` assigns the entire record to variable `$0`, field 1 to `$1`, field 2 to `$2`, etc...
+
+--
+
+* In pattern-action pairs, `awk` first tries to match a specified pattern in a record or field and, if this is successful, the specified action is carried out
+
+---
+
+## Processing data with the `awk` programming language
+
+--
+
+* We can mimic the `cat` program with `awk` by omitting the pattern component of a pattern-action pair:
+
+```
+$ awk '{ print $0 }' example.bed
+```
+--
+
+* Similarly, we can also mimic `cut`:
+
+```
+$ awk '{ print $2 "\t" $3 }' example.bed
+```
+--
+
+* Standard arithmetic operators (+, -, *, /, etc...) can be used in the pattern component of pattern-action pairs
+
+--
+
+* For example, here our pattern is matching .bed file features that are at least 18bp long and the implicit action is to print matches to standard out:
+
+```
+$ awk '$3 - $2 > 18' example.bed
+```
+---
+## Processing data with the `awk` programming language
+--
+
+* We can also link patterns in a chain to apply multiple conditions in our pattern using the `&&` (AND), `||` (OR), and `!` (NOT) operators
+
+--
+
+* For example, if we want the .bed features that are on chromosome 1 AND at least 10bp long:
+
+```
+$ awk '$1 ~ /chr1/ && $3 - $2 > 10' example.bed
+```
+--
+
+* We can also include more explicit actions than just printing an entire record to standard out:
+
+```
+$ awk '$1 ~ /chr2|chr3/ { print $0 "\t" $3 - $2 }' example.bed
+```
+---
+
+## Additional functionality of the `awk` programming language
+
+--
+
+* The pattern-process `awk` tools we have learned thus far are very useful for processing files, but `awk` has many more useful tools
+
+--
+
+* The `BEGIN` and `END` commands can allow us to initialize variables before implementing our pattern-process across records (`BEGIN`) and use this variable afterwards (`END`):
+
+```
+$ awk 'BEGIN{ s = 0 }; { s += ($3-$2) }; END{ print "mean: " s/NR };' example.bed
+```
+--
+
+* Here we initialize the variable `s` and increment (`+=`) this variable by the length of each feature across all records and then divide this by `NR`...what is `NR`?
+
+--
+
+* `NR` can also be used to extract intermediate records (i.e., lines) in a file (the same process we discussed using `head` and `tail` in a pipe):
+
+```
+$ awk 'NR >= 3 && NR <= 5' example.bed
+```
+---
+
+## Additional functionality of the `awk` programming language
+
+--
+
+* `awk` can also be used to convert a .gtf file into a .bed file:
+
+```
+$ awk '!/^#/ { print $1 "\t" $4-1 "\t" $5 }' Mus_musculus.GRCm38.75_chr1.gtf |
+	 \ head -n 3
+```
+--
+
+* Note that the start site of features in the .bed file is 1 less than the start site of features in the .gtf file: .bed uses 0-indexing and .gtf uses 1-indexing
+
+--
+
+* Associative arrays (similar to `Python` dictionaries) can also be very useful in `awk`:
+
+```
+$ awk '/Lypla1/ { feature[$3] += 1}; \
+	END { for (k in feature) \
+	print k "\t" feature[k] }' Mus_musculus.GRCm38.75_chr1.gtf
+```
+--
+
+* Could this also be done with basic UNIX commands?
+
+---
+
+## `bioawk`: `awk` functionality more tailored to bioinformatics
+
+--
+
+* `bioawk` is similar to `awk` but it can recognize common bioinformatics file formats (e.g., .bed, .sam, .vcf, .gff, .fastx) and includes useful programs for bioinformatics
+
+```
+$ bioawk -c gff '$feature ~ /gene/ && $source ~ /protein_coding/ \
+	{print $seqname,$end-$start}' Mus_musculus.GRCm38.75_chr1.gtf | head -n 4
+```
+--
+
+* You could also use `bioawk` to convert a `fastq` into a `fasta` file:
+
+--
+
+```
+$ bioawk -c fastx '{print ">"$name"\n"$seq}' contam.fastq | head -n 4
+```
+--
+
+* Or to print the number of sequences in a `fastq/fasta` file, something you couldn't do with `wc`:
+
+```
+$ bioawk -c fastx 'END{print NR}' contam.fastq
+```
+---
+
+## `bioawk`: `awk` functionality more tailored to bioinformatics
+
+--
+
+* Finally, the option `-c hdr` can be very useful as it sets the field variables to the names given in a file header
+
+--
+
+* For example, take another look at the `genotypes.txt` file:
+
+```
+$ head -n 4 genotypes.txt
+```
+--
+
+* Let's use the `-c hdr` option to find the markers where ind_A and ind_B have the same genotype:
+
+```
+$ bioawk -c hdr '$ind_A == $ind_B {print $id}' genotypes.txt
+```
+---
+
+## Using the `sed` program to edit text in a stream
+
+--
+
+* In addition to many other functions, we can use `sed` to make simple "find and replace" edits to our files:
+
+```
+$ head -n 3 chroms.txt
+
+$ sed 's/chrom/chr/' chroms.txt | head -n 3
+```
+--
+
+* If this file were many Gb in size, this stream editing would be much, much faster than opening the file and doing a find and replace in a text editor
+
+--
+
+* The above syntax only substitutes the first occurence of "chrom" on a line, to do this across all "chrom" values we'd need to use the global option of `sed`:
+
+```
+$ sed 's/chrom/chr/g' chroms.txt
+```
+
 
     </textarea>
     <script src="https://gnab.github.io/remark/downloads/remark-latest.min.js" type="text/javascript">
