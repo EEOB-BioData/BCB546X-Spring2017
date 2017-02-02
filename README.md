@@ -8,6 +8,8 @@
 
 #### Time/Location: Tuesday and Thursday, 1:10-2:30 PM in 203 Bessey Hall
 
+### Web View: [http://eeob-biodata.github.io/BCB546X-Spring2017](http://eeob-biodata.github.io/BCB546X-Spring2017/)
+
 ## Reading Material
 
 * [*Bioinformatics Data Skills*](http://shop.oreilly.com/product/0636920030157.do) by [Vince Buffalo](http://www.vincebuffalo.com/)
