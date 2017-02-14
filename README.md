@@ -38,5 +38,14 @@ Be sure to check the schedule for updates.
 
 * [UNIX Data Tools (continued)](http://eeob-biodata.github.io/BCB546X-Spring2017/Week_4/lecture_31-Jan-MBH.html#34)
 
+**[Week 5](https://github.com/EEOB-BioData/BCB546X-Spring2017/tree/master/Week_5)**
+
+* [Introduction to R](https://eeob-biodata.github.io/R-Data-Skills/)
+
+**[Week 6](https://github.com/EEOB-BioData/BCB546X-Spring2017/tree/master/Week_5)**
+
+* [Working with and Visualizing Data in R](https://eeob-biodata.github.io/R-Data-Skills/)
+
+
 ---
 <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br />Except where otherwise noted, content on this site is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
