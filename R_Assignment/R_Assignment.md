@@ -45,4 +45,15 @@ A total of 40 files will therefore be produced.
 
 ## Part II
 
-I will add this part after the class on Tuesday, 2/21.
+We will use ggplot to visualize our data in this part. As mentioned today in class, it may be easier to reshape the original data ([make it tidy](https://www.jstatsoft.org/article/view/v059i10)) using the `melt` command in the `reshape2` package before attempting this part.
+
+### _SNPs per chromosome_
+Plot the total number of SNPs in our dataset on each chromosome. What groups contribute most of these SNPs?
+
+### _Missing data and amount of heterozygosity_
+Create a new column to indicate whether a particular site is homozygous (has the same nucleotide on both chromosomes (i.e., A/A, C/C, G/G, T/T) or heterozygous (otherwise)).  Recode the missing data as NA. Sort your dataframe using Group and Species_ID values. Make a graph that shows the proportion of homozygous and heterozygous sites as well as missing data in each species (you won't be able to see species names) and each group.  For groups normalize the height of individual bars using one of the ggplot "position adjustments" options.
+
+### _Your own visualization_
+Visualize one other feature of the dataset. The choice is up to you!
+
+
