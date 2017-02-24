@@ -46,6 +46,14 @@ Be sure to check the schedule for updates.
 
 * [Working with and Visualizing Data in R](https://eeob-biodata.github.io/R-Data-Skills/)
 
+**Week 7**
+
+* [More R](https://eeob-biodata.github.io/R-Data-Skills/)
+
+**[Week 8](https://github.com/EEOB-BioData/BCB546X-Spring2017/tree/master/Week_8)**
+
+* Introduction to Programming in Python
+
 ## Final Group Project
 
 The group projects will be due at the end of the semester during the last two class meetings, where each group will give a presentation on their work. 
