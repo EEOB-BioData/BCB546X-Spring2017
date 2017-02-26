@@ -34,3 +34,10 @@ After downloading and installing Anaconda, it is helpful to update the packages.
 ```
 conda update --all
 ```
+
+## Lessons
+
+The Python lessons we'll uses in this class are modified from the Data Carpentry and Software Carpentry content. 
+Our course content is hosted here:
+
+[https://eeob-biodata.github.io/2017-python-programming](https://eeob-biodata.github.io/2017-python-programming)

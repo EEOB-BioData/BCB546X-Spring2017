@@ -52,7 +52,7 @@ Be sure to check the schedule for updates.
 
 **[Week 8](https://github.com/EEOB-BioData/BCB546X-Spring2017/tree/master/Week_8)**
 
-* Introduction to Programming in Python
+* [Introduction to Programming in Python](https://eeob-biodata.github.io/2017-python-programming/)
 
 ## Final Group Project
 
