@@ -54,6 +54,11 @@ Be sure to check the schedule for updates.
 
 * [Introduction to Programming in Python](https://eeob-biodata.github.io/2017-python-programming/)
 
+**Week 9**
+
+* [Working with Pandas DataFrames](https://eeob-biodata.github.io/2017-python-programming/03-starting-with-data/)
+* [Indexing, Slicing, and Subsetting DataFrames](https://eeob-biodata.github.io/2017-python-programming/04-more-dataframes/)
+
 ## Final Group Project
 
 The group projects will be due at the end of the semester during the last two class meetings, where each group will give a presentation on their work. 
