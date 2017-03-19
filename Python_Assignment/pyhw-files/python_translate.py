@@ -99,9 +99,10 @@ species_list = list(bear_df.species)
 #     # get proportions of each aa type
 #     set the value of each proportion in the dataframe (i.e., fill in empty cells in DF)
 
+# %matplotlib inline # uncomment for jupyter nb
+
 ## 6 ##
 ## Plot a bar-chart of the mass with the x-axes labeled with species names
-# %matplotlib inline # uncomment for jupyter nb
 
 ## 7 ##
 ## Plot a visualization of the proportions for amino-acid type for the bear species
