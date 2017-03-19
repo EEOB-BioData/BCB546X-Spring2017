@@ -26,10 +26,8 @@
 ## IMPORTANT: install biopython so that this will work
 
 from Bio import SeqIO
-from Bio.Alphabet import IUPAC
 from Bio.Data import CodonTable
 import pandas as pd
-import numpy as np
 
 ## Functions ##
 
@@ -38,12 +36,12 @@ import numpy as np
 ## please finish documenting this function with comments, or in notebook markdown text
 ## be sure to provide details on return types and arguments
 def get_sequences_from_file(fasta_fn):
-    sequence_data = {}
-    for r in SeqIO.parse(fasta_fn, "fasta"):
-        desc = r.description.split()
-        species_name = desc[1] + " " + desc[2]
-        sequence_data[species_name] = r.seq
-    return(sequence_data)
+    sequence_data_dict = {}
+    for record in SeqIO.parse(fasta_fn, "fasta"):
+        description = record.description.split()
+        species_name = description[1] + " " + description[2]
+        sequence_data_dict[species_name] = record.seq
+    return(sequence_data_dict)
 
 ## 2 ##
 ####### YOUR STRING-TRANSLATE FUNCTION ########
