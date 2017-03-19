@@ -48,6 +48,7 @@ def get_sequences_from_file(fasta_fn):
 ## 2 ##
 ####### YOUR STRING-TRANSLATE FUNCTION ########
 ## Write a function that translates sequences
+## All sequences start at codon position 1
 ## Complete a function that does this using loop over the string of nucleotides
 ## Here is  some pseudo-code and suggestions
 ## feel free to change the function and variable names
