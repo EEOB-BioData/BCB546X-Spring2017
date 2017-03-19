@@ -11,7 +11,7 @@
 ## ** Do all of this in a Jupyter notebook and push it to a GitHub repository
 ## ** Be sure to cite (by providing URLs) information appropriately in your documented notebook.
 ## ** Commit and push your completed work in the Jupyter notebook to your repository
-## ** Create a link to your completed Jupyter notebook using [https://nbviewer.jupyter.org/](https://nbviewer.jupyter.org/)
+## ** Create a link to your completed Jupyter notebook using https://nbviewer.jupyter.org
 ## ** Send the above link *AND* the URL to your git repository to the instructors via Slack by the end of the day on March 31.
 
 ## Not all of these tasks have been covered in class and you will 
