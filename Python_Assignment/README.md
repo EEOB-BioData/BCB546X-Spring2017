@@ -18,7 +18,10 @@ Additionally, Dr. X has written some comments and pseudocode that outline other 
 
 ## Details
 
-* Download the necessary files from the course repository and add them to your own repository where you will submit this assignment.
+* Download the necessary files from the [course repository](https://github.com/EEOB-BioData/BCB546X-Spring2017/tree/master/Python_Assignment) and add them to your own repository where you will submit this assignment. The files required are:
+    * `python_translate.py`
+    * `bears_data.csv`
+    * `bears_cytb.fasta`
 * Be sure to install the BioPython library so that this script will work. (You may have already done this in an early [Python lesson](https://eeob-biodata.github.io/2017-python-programming/02-datatypes).)
 * You will find explicit instructions and the code/comments from Dr. X in the file called `python_translate.py`.
 Specific tasks are enumerated (1-8) in the script file with comments at the top.
