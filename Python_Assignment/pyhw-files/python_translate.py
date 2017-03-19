@@ -1,3 +1,5 @@
+######################## BCB 546X: Python Assignment Details ########################
+
 ## Your Mission: Complete Python code in a Jupyter Notebook ##
 ## 1. Document Dr. X's function with comments and with markdown text in your Jupyter notebook
 ## 2. Write a function that translates a string of nucleotides to amino acids based on Dr. X's pseudo-code suggestion
