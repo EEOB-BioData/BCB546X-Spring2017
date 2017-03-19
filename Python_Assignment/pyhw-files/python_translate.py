@@ -17,6 +17,9 @@
 ## Not all of these tasks have been covered in class and you will 
 ## have to use online resources to find out how to do some of these tasks.
 
+
+######################## Python Translate Script ########################
+
 ## Here's the start of our Python script. Thanks for completing it for me! - Dr. X
 ## IMPORTANT: install biopython so that this will work
 
