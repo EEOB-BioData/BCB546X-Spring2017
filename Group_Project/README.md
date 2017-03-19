@@ -1,4 +1,4 @@
-##Group Project and Presentation
+## Group Project and Presentation
 
 As we've discussed in class, the recent deluge of genomic data has required many biologists to master computational skills that weren't previously essential to the discipline. To many biologists, version control and documented computational pipelines are new concepts and there is still great heterogeneity in the extent to which these practices are put in place.
 
