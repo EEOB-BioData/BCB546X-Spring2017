@@ -18,7 +18,7 @@ Additionally, Dr. X has written some comments and pseudocode that outline other 
 
 ## Details
 
-* Download the necessary files from the [`pyhw-files`](https://github.com/EEOB-BioData/BCB546X-Spring2017/tree/master/Python_Assignment/pyhw-files) folder in the course repository and add them to your own repository where you will submit this assignment. The files required are:
+* Download the necessary files from the [`Python_Assignment/pyhw-files`](https://github.com/EEOB-BioData/BCB546X-Spring2017/tree/master/Python_Assignment/pyhw-files) folder in the course repository and add them to your own repository where you will submit this assignment. The files required are:
     * `python_translate.py`
     * `bears_data.csv`
     * `bears_cytb.fasta`
