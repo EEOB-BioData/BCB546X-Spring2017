@@ -29,7 +29,9 @@ from Bio import SeqIO
 from Bio.Data import CodonTable
 import pandas as pd
 
-## Functions ##
+#%%%%%%%%%%%%%%%#
+### FUNCTIONS ###
+#%%%%%%%%%%%%%%%#
 
 ## 1 ##
 ## Dr. X: this gets sequences 
@@ -78,9 +80,11 @@ def get_sequences_from_file(fasta_fn):
 #         # count the number of times that aa appears, add to the total for charged
 #     # repeat for polar and hydrophobic
 #     return proportion_charged, proportion_polar, proportion_hydro 
-# 
 
-### MAIN ###
+
+#%%%%%%%%%%%%%%#
+###   MAIN   ###
+#%%%%%%%%%%%%%%#
 
 cytb_seqs = get_sequences_from_file("bears_cytb.fasta") 
 
