@@ -20,14 +20,14 @@ Additionally, Dr. X has written some comments and pseudocode that outline other 
 
 * Download the necessary files from the course repository and add them to your own repository where you will submit this assignment.
 * Be sure to install the BioPython library so that this script will work. (You may have already done this in an early [Python lesson](https://eeob-biodata.github.io/2017-python-programming/02-datatypes).)
-2. You will find explicit instructions and the code/comments from Dr. X in the file called `python_translate.py`.
+* You will find explicit instructions and the code/comments from Dr. X in the file called `python_translate.py`.
 Specific tasks are enumerated (1-8) in the script file with comments at the top.
-2. Create a new Jupyter notebook in your repository. 
+* Create a new Jupyter notebook in your repository. 
     * In this notebook you will carefully annotate and execute the code already provided in `python_translate.py`. If you're unfamiliar with a bit of code, you can find lots of resources and information on the internet. Be sure to cite (by providing URLs) information appropriately. 
-    4. You must also write the missing code that is outlined by pseudocode and comments.
-    5. Remember to document everything clearly!
-6. Commit and push your completed Python analyses in the Jupyter notebook to your repository
-7. Create a link to your completed Jupyter notebook using [https://nbviewer.jupyter.org/](https://nbviewer.jupyter.org/)
-8. Send the above link and the URL to your git repository to the instructors via Slack by the end of the day on March 31.
+    * You must also write the missing code that is outlined by pseudocode and comments.
+    * Remember to document everything clearly!
+* Commit and push your completed Python analyses in the Jupyter notebook to your repository
+* Create a link to your completed Jupyter notebook using [https://nbviewer.jupyter.org/](https://nbviewer.jupyter.org/)
+* Send the above link and the URL to your git repository to the instructors via Slack by the end of the day on March 31.
 
 
