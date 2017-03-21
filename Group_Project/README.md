@@ -1,4 +1,4 @@
-##Group Project and Presentation
+## Group Project and Presentation
 
 As we've discussed in class, the recent deluge of genomic data has required many biologists to master computational skills that weren't previously essential to the discipline. To many biologists, version control and documented computational pipelines are new concepts and there is still great heterogeneity in the extent to which these practices are put in place.
 
@@ -8,7 +8,7 @@ For an example of a well documented study, see the following GitHub repository:
 
 This repository accompanied a [recent](http://www.nature.com/articles/nplants201684) paper published in the journal _Nature Plants_.
 
-###Your Mission: to provide documentation for an undocumented study
+### Your Mission: to provide documentation for an undocumented study
 
 Groups of 3 or 4 students will identify a recent paper that utilizes computational skills in any area of biology but lacks sufficient documentation to easily replicate the analysis pipeline. Collectively, each group will identify a subset of analyses from this manuscript to reproduce and document using the computational skills and documentation standards you have learned in class.
 
@@ -21,7 +21,7 @@ This should entail:
 
 The graded deliverables that each group will provide will include a __GitHub Repository__ and an __In-Class Presentation__.
 
-###GitHub Repository:
+### GitHub Repository:
 
 This can be organized however each group sees fit, but documentation of analysis should be clear and easy to follow. Please include:
 
@@ -34,7 +34,7 @@ When creating your repository, you can choose one group member to be the owner o
 
 **Repository Name**: Please include "BCB546X-Spring2017" in the name of your repository.
 
-###In-Class Presentation:
+### In-Class Presentation:
 
 Each group will have ~20 minutes to present their work on either April 25th or 27th.  Each presentation should include:
 
