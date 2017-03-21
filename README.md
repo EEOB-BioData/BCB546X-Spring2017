@@ -59,7 +59,7 @@ Be sure to check the schedule for updates.
 * [Working with Pandas DataFrames](https://eeob-biodata.github.io/2017-python-programming/03-starting-with-data/)
 * [Indexing, Slicing, and Subsetting DataFrames](https://eeob-biodata.github.io/2017-python-programming/04-more-dataframes/)
 
-**Week 10**
+**[Week 10](https://github.com/EEOB-BioData/BCB546X-Spring2017/tree/master/Week_10)**
 
 * [Visualizing Data in Python](https://eeob-biodata.github.io/2017-python-programming/05-ggplot-viz)
 * Guest Lecture by Dr. [Adina Howe](http://germslab.org/people/) from the Department of Agricultural and Biosystems Engineering: [Bioinformatics Workflows using Unix and Python](https://github.com/EEOB-BioData/BCB546X-Spring2017/tree/master/python-howe)
