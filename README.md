@@ -46,6 +46,31 @@ Be sure to check the schedule for updates.
 
 * [Working with and Visualizing Data in R](https://eeob-biodata.github.io/R-Data-Skills/)
 
+**Week 7**
+
+* [More R](https://eeob-biodata.github.io/R-Data-Skills/)
+
+**[Week 8](https://github.com/EEOB-BioData/BCB546X-Spring2017/tree/master/Week_8)**
+
+* [Introduction to Programming in Python](https://eeob-biodata.github.io/2017-python-programming/)
+
+**Week 9**
+
+* [Working with Pandas DataFrames](https://eeob-biodata.github.io/2017-python-programming/03-starting-with-data/)
+* [Indexing, Slicing, and Subsetting DataFrames](https://eeob-biodata.github.io/2017-python-programming/04-more-dataframes/)
+
+**[Week 10](https://github.com/EEOB-BioData/BCB546X-Spring2017/tree/master/Week_10)**
+
+* [Visualizing Data in Python](https://eeob-biodata.github.io/2017-python-programming/05-ggplot-viz)
+* Guest Lecture by Dr. [Adina Howe](http://germslab.org/people/) from the Department of Agricultural and Biosystems Engineering: [Bioinformatics Workflows using Unix and Python](https://github.com/EEOB-BioData/BCB546X-Spring2017/tree/master/python-howe)
+
+## Final Group Project
+
+The group projects will be due at the end of the semester during the last two class meetings, where each group will give a presentation on their work. 
+
+The description of the group project can be found here: 
+
+[https://github.com/EEOB-BioData/BCB546X-Spring2017/tree/master/Group_Project](https://github.com/EEOB-BioData/BCB546X-Spring2017/tree/master/Group_Project)
 
 ---
 <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br />Except where otherwise noted, content on this site is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
