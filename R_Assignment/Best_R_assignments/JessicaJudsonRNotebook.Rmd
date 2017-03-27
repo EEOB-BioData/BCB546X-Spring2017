@@ -1,0 +1,308 @@
+---
+title: "Jessica Judson's R Notebook"
+output: html_notebook
+---
+
+```{r}
+setwd("/Users/jessicajudson/Desktop/EEOB546X/Assignment_2")
+```
+
+#Part 1
+##Data Inspection
+
+**1. Load the files from the Unix assignment into R**
+```{r}
+genotypes <- read.table("fang_et_al_genotypes.txt", header = TRUE, sep="\t", stringsAsFactors = FALSE)
+position <- read.table("snp_position.txt", header = TRUE, fill = TRUE, sep="\t", stringsAsFactors = FALSE)
+```
+  
+
+**2. Inspect the files using various commands**
+```{r}
+file.info("fang_et_al_genotypes.txt")
+file.info("snp_position.txt")
+typeof(genotypes)
+typeof(position)
+class(genotypes)
+class(position)
+colnames(genotypes)
+colnames(position)
+str(genotypes)
+str(position)
+head(genotypes)
+head(position)
+```
+
+
+**3. Results of various descriptive commands are as follows:**  
+
+* File Information:  
+    * fang_et_al_genotypes.txt is a 11051939 byte file  
+    * snp_position.txt is a 82763 byte file
+* genotypes is a data frame with list type, has 2782 observations (rows excluding header) of 986 variables (or columns)  
+* position is a data frame with list type, has 983 observations and 15 variables  
+* genotypes has column names for Sample ID, Group, another ID, and then columns for each of the SNPs  
+* position has column names for SNP ID, marker ID, Chromosome, Position, alternative and multiple positions, amplicon, feature name, gene, type, and some other columns for counts (total of 15)  
+* Based on the head command, genotypes has missing values coded with '?'.
+
+##Data Processing   
+
+**1. Subset the genotype dataframe into two objects, one for maize (ZMMIL, ZMMLR, and ZMMMR) and one for teosinte (ZMPBA, ZMPIL, and ZMPJA)**  
+```{r}
+maizegroup <- c("ZMMIL", "ZMMLR", "ZMMMR")
+teosintegroup <- c("ZMPBA", "ZMPIL", "ZMPJA")
+maizegenotypes <- genotypes[genotypes$Group %in% maizegroup, ]
+row.names(maizegenotypes) <- maizegenotypes[,1]
+teosintegenotypes <- genotypes[genotypes$Group %in% teosintegroup, ]
+row.names(teosintegenotypes) <- teosintegenotypes[,1]
+```
+
+
+**2. Get rid of extraneous columns in maizegenotypes and teosintegenotypes dataframes (Sample_ID, JG_OTU, and Group). We just want the names of the SNPs and the data.**  
+
+```{r}
+cutmaizegenotypes <- maizegenotypes[,-1:-3]
+cutteosintegenotypes <- teosintegenotypes[,-1:-3]
+```
+
+
+**3. Get rid of extraneous columns in the snp position dataframe (cdv marker ID and everything after position).**  
+
+```{r}
+cutposition <- position[, c("SNP_ID","Chromosome","Position")]
+```
+
+
+**4. Transpose the genotypes dataframes, making sure that the final result is a dataframe**  
+
+```{r}
+transposedmaize <- as.data.frame(t(cutmaizegenotypes))
+transposedteosinte <- as.data.frame(t(cutteosintegenotypes))
+is.data.frame(transposedmaize)
+is.data.frame(transposedteosinte)
+```
+
+
+**5.Sort the genotype and SNP position dataframes by the SNP name, the column that the two files have in common.**  
+
+```{r}
+sortedposition <- cutposition[order(cutposition$SNP_ID),] #sort by SNP_ID
+SNPstransposedmaize <- cbind(SNP_ID = rownames(transposedmaize), transposedmaize) #For the transposed genotype files, we need to create a new column with the SNP IDs and 
+rownames(SNPstransposedmaize) <- NULL #delete the rownames created from transposing the files. That way, we can sort the new column of SNP IDs.
+SNPstransposedteosinte <- cbind(SNP_ID = rownames(transposedteosinte), transposedteosinte)
+rownames(SNPstransposedteosinte) <- NULL
+sortedmaize <- SNPstransposedmaize[order(SNPstransposedmaize$SNP_ID),] #sort by SNP_ID
+sortedteosinte <- SNPstransposedteosinte[order(SNPstransposedteosinte$SNP_ID),] #sort by SNP_ID
+```
+
+
+**6. Join the sortedposition dataframe to each of the genotype dataframes using SNP_ID**
+
+```{r}
+table(sortedposition$SNP_ID %in% sortedmaize$SNP_ID) #check that the rows all line up 
+table(sortedposition$SNP_ID %in% sortedteosinte$SNP_ID)
+joinedmaize <- merge(sortedposition, sortedmaize, by.x="SNP_ID", by.y="SNP_ID") #now merge by the SNP_ID column
+joinedteosinte <- merge(sortedposition, sortedteosinte, by.x="SNP_ID", by.y="SNP_ID")
+```
+
+
+**7. Next, we need to isolate each chromosome and sort by position. For the first 10 files, we need 1 for each chromosome with SNPs ordered by increasing position values and missing data shown by '?'. To do this, first order the datasets by increasing position**  
+
+```{r}
+library(gtools)
+orderedmaizeincrease <- joinedmaize[mixedorder(joinedmaize$Position),] #order the dataset by increasing position
+orderedteosinteincrease <- joinedteosinte[mixedorder(joinedteosinte$Position),]
+```
+
+**8. Next, I wrote a function that will pull out each chromosome and write them to a file using the package dplyr**
+
+```{r}
+library(dplyr)
+maize_no_ambig <- subset(orderedmaizeincrease, orderedmaizeincrease$Chromosome!="unknown" & orderedmaizeincrease$Chromosome!="multiple") #I removed character strings from the Chromosome column of the dataset, leaving only the numeric chromosome values for the function
+MaizeChromosomeQ <- tbl_df(maize_no_ambig) #need to translate the dataframe into dplyr-readable format
+
+filewriteMQ  = function(DF) {
+write.table(DF,file = paste0("Maize_Chromosome_Q",unique(DF$Chromosome),".txt"), sep = "\t", row.names = FALSE)
+return(DF)
+} #my function to write files with names based on chromosome
+
+MaizeChromosomeQ %>% 
+group_by(Chromosome) %>% 
+do(filewriteMQ(.)) #this is the dplyr piping of the dataframe to a grouping function, and then the files are written for each group
+```
+
+
+**9. I did the same for teosinte, writing a modified function to change the filenames**
+
+```{r}
+teosinte_no_ambig <- subset(orderedteosinteincrease, orderedteosinteincrease$Chromosome!="unknown" & orderedteosinteincrease$Chromosome!="multiple")
+TeosinteChromosomeQ <- tbl_df(teosinte_no_ambig) 
+
+filewriteTQ  = function(DF) {
+write.table(DF,file = paste0("Teosinte_Chromosome_Q",unique(DF$Chromosome),".txt"), sep = "\t", row.names = FALSE)
+return(DF)
+} 
+
+TeosinteChromosomeQ %>% 
+group_by(Chromosome) %>% 
+do(filewriteTQ(.)) 
+```
+
+**10. For the next ten files of maize and teosinte with '-' denoting missing values:**
+
+```{r}
+missingvaluemaize <- as.data.frame(lapply(joinedmaize, function(x) {gsub("\\?","-", x)})) #replace missing values with -
+missingvalueteosinte <- as.data.frame(lapply(joinedteosinte, function(x) {gsub("\\?","-", x)}))
+```
+
+
+**11. Sort by decreasing order:**
+
+```{r}
+orderedmaizedecrease <- missingvaluemaize[mixedorder(as.character(missingvalue$Position), decreasing=TRUE),] #order the dataset by decreasing position
+orderedteosintedecrease <- missingvalueteosinte[mixedorder(as.character(missingvalueteosinte$Position), decreasing=TRUE),]
+```
+
+
+**12. Using the function from before, I pulled out each chromosome and created a file for maize chromosomes.**
+
+```{r}
+maize_no_ambig2 <- subset(orderedmaizedecrease, orderedmaizedecrease$Chromosome!="unknown" & orderedmaizedecrease$Chromosome!="multiple")
+MaizeChromosomeD <- tbl_df(maize_no_ambig2) 
+
+filewriteMD  = function(DF) {
+write.table(DF,file = paste0("Maize_Chromosome_D",unique(DF$Chromosome),".txt"), sep = "\t", row.names = FALSE)
+return(DF)
+} 
+
+MaizeChromosomeD %>% 
+group_by(Chromosome) %>% 
+do(filewriteMD(.))
+```
+
+**13. Same for teosinte:** 
+
+```{r}
+teosinte_no_ambig2 <- subset(orderedteosintedecrease, orderedteosintedecrease$Chromosome!="unknown" & orderedteosintedecrease$Chromosome!="multiple")
+TeosinteChromosomeD <- tbl_df(teosinte_no_ambig2) 
+
+filewriteTD  = function(DF) {
+write.table(DF,file = paste0("Teosinte_Chromosome_D",unique(DF$Chromosome),".txt"), sep = "\t", row.names = FALSE)
+return(DF)
+} 
+
+TeosinteChromosomeD %>% 
+group_by(Chromosome) %>% 
+do(filewriteTD(.))
+```
+
+#Part 2
+
+##Question 1: SNPs per Chromosome
+###Graph
+```{r}
+position <- read.table("snp_position.txt", header = TRUE, fill = TRUE, sep="\t", stringsAsFactors = FALSE) #went back to using the original file
+library(reshape2)
+meltedposition <- melt(position, "Chromosome", "SNP_ID") #reshape data
+```
+
+```{r}
+library(ggplot2)
+ggplot(meltedposition) + 
+  geom_bar(aes(x=Chromosome, fill=Chromosome)) + 
+  ggtitle("Number of SNPs for Each Chromosome") + 
+  labs(x="Chromosome",y="SNP Count")
+```
+
+###Which groups contribute most of these SNPs?
+
+**The dataframe graph comes from the next graphing question**
+
+```{r}
+graphsummary2 <- graph %>% 
+  group_by(Group, variable, SNPStatus) %>% 
+  summarise(length(SNPStatus)) #group by Group and SNP status, then total the counts of each different SNP status
+
+colnames(graphsummary2)[4] <- "SNP_Number" #rename column name
+```
+
+**Manipulate the dataframe**
+```{r}
+graphsummary3 <- dcast(graphsummary2, Group + variable ~SNPStatus, value.var = "SNP_Number") #cast the dataframe so that Heterozygous individuals are counted for each locus in each population in a single column
+
+colnames(graphsummary3)[5] <- "Missing"
+
+Heterozygosity <- graphsummary3 %>% 
+  group_by(Group, variable) %>% 
+  summarise(length(Heterozygous[!is.na(Heterozygous)])) #calls whether a locus is heterozygous or not for each group
+
+colnames(Heterozygosity)[3] <- "Heterozygous"
+
+Heterozygositysummed <- Heterozygosity %>%
+  group_by(Group) %>%
+  count(Heterozygous) #count the number of loci that are heterozygous for each group
+```
+
+**Graph**
+```{r}
+ggplot(Heterozygositysummed[order(Heterozygositysummed$Heterozygous, decreasing = T),], aes(x=Group, y = n, fill=factor(Heterozygous))) + 
+  geom_bar(stat="identity") + 
+  ggtitle("Number of Heterozygous Loci for each Group") + 
+  labs(x="Group",y="Count") + 
+  theme(legend.title=element_blank(), axis.text.x=element_text(angle = 90, hjust = 0)) +
+  scale_fill_discrete(name="Condition",
+                         breaks=c("1", "0"),
+                         labels=c("Heterozygous", "Homozygous/NA"),
+                         guide = guide_legend(reverse=TRUE))
+```
+
+
+###Based on this graph, the groups that are heterozygous at the most loci include: ZMMLR, ZMPBA, ZMPJA, ZMXCH, ZMXCP. These groups contribute most of the SNPs in the dataset.
+
+##Question 2: Missing Data and Amount of Heterozygosity
+
+```{r}
+genotypes <- read.table("fang_et_al_genotypes.txt", header = TRUE, sep="\t", stringsAsFactors = FALSE) #reload the genotype file
+meltedgenotypes <- melt(genotypes, c(1,3), c(4:986)) #tidy the data
+
+SNPStatus <- function(x){
+  ifelse (x == "?/?", "NA",
+  ifelse (x == "A/A"|x == "C/C"|x == "G/G"|x == "T/T", "Homozygous","Heterozygous"))} #function to call
+
+meltedgenotypes$SNPStatus <- lapply(meltedgenotypes$value, FUN=SNPStatus) #apply the function over the column in the reshaped dataset
+```
+
+###Next, Sort and Graph
+
+```{r}
+library(gtools)
+groupsortgenotypes <- meltedgenotypes[mixedorder(meltedgenotypes$Group),] #sort by group
+graph <- tbl_df(groupsortgenotypes) #make a tibble
+graph$SNPStatus <- as.factor(unlist(graph$SNPStatus)) #unlist the new column so we can group by it
+graphsummary <- graph %>% 
+  group_by(Group, SNPStatus) %>% 
+  summarise(length(SNPStatus)) #group by Group and SNP status, then total the counts of each different SNP status
+colnames(graphsummary)[3] <- "SNP_Number"
+```
+
+```{r}
+ggplot(graphsummary, aes(x=Group, y = SNP_Number, fill=SNPStatus)) + 
+  geom_bar(stat="identity", position = "fill") + 
+  ggtitle("Proportion of SNP Types By Population") + 
+  labs(x="Group",y="Proportion") + 
+  theme(axis.text.x=element_text(angle = 90, hjust = 0)) +
+  labs(fill='SNP Type')
+```
+
+
+##Question 3: Visualize an aspect of my choice: candidate versus random designation across chromosomes
+
+```{r}
+meltedpositionnew <- melt(position, "Chromosome", "candidate.random") #reshape data
+colnames(meltedpositionnew)[3] <- "Type" #rename column with info on candidate vs. random
+ggplot(meltedpositionnew) + 
+  geom_bar(aes(x=Chromosome, fill=Type)) + 
+  ggtitle("Candidate Vs. Random SNP Number for Each Chromosome") + 
+  labs(x="Chromosome",y="SNP Count")
+```
+
