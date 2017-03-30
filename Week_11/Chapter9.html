@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="keywords" content="remote machines, Git, GitHub" />
+    <meta name="description" content="Lecture introducing remote machines and version control using Git." />
+    <title>BCB 546X -- 17 Jan 2017</title>
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Droid+Serif);
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+      body {
+        font-family: 'Droid Serif';
+      }
+      h1, h2, h3 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: 400;
+        margin-bottom: 0;
+      }
+      .remark-slide-content h1 { font-size: 3em; }
+      .remark-slide-content h2 { font-size: 2em; }
+      .remark-slide-content h3 { font-size: 1.6em; }
+      .footnote {
+        position: absolute;
+        bottom: 3em;
+      }
+      li p { line-height: 1.25em; }
+      .red { color: #fa0000; }
+      .large { font-size: 2em; }
+      a, a > code {
+        color: rgb(249, 38, 114);
+        text-decoration: none;
+      }
+      code {
+        background: #e7e8e2;
+        border-radius: 5px;
+      }
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+      .remark-code-line-highlighted     { background-color: #373832; }
+      .pull-left {
+        float: left;
+        width: 47%;
+      }
+      .pull-right {
+        float: right;
+        width: 47%;
+      }
+      .pull-right ~ p {
+        clear: both;
+      }
+      #slideshow .slide .content code {
+        font-size: 0.8em;
+      }
+      #slideshow .slide .content pre code {
+        font-size: 0.9em;
+        padding: 15px;
+      }
+      .inverse {
+        background: #272822;
+        color: #777872;
+        text-shadow: 0 0 20px #333;
+      }
+      .inverse h1, .inverse h2 {
+        color: #f3f3f3;
+        line-height: 0.8em;
+      }
+      /* Two-column layout */
+      .left-column {
+        color: #777;
+        width: 20%;
+        height: 92%;
+        float: left;
+      }
+        .left-column h2:last-of-type, .left-column h3:last-child {
+          color: #000;
+        }
+      .right-column {
+        width: 75%;
+        float: right;
+        padding-top: 1em;
+      }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+class: center, middle
+
+# Working with Range Data
+## Buffalo Chapter 9
+
+???
+
+Notes for the _first_ slide!
+
+---
+
+# Introduction
+
+--
+
+## Chromosomes and Coordinate Systems:
+
+--
+
+* because chromosomes are linear strings of nucleotides, they can be represented with a coordinate system
+
+--
+
+* the coordinate system allows us to reference particular regions of a chromosome:
+	* _a gene_
+	* _an exon_
+	* _a transposable element_
+
+--
+
+* once genomic datasets are represented as genomic ranges, a series of operations, particularly those involving overlap and proximity, can be carried out
+
+---
+
+# Components of a Genomic Range
+
+--
+
+## Three pieces of information are necessary to specify a genomic region:
+
+--
+
+* **Chromosome (or scaffold/contig) name**: naming conventions can vary (_e.g.,_ chr4, 4, scaffold_627)
+
+--
+
+* **Range**: the start and end site of a genomic region (_e.g.,_ 123,654,834 to 123,654,985)
+
+--
+
+* **Strand**: DNA is double-stranded and features can be on the forward (positive) or reverse (negative) strand. Features such as proteins can be strand-specific.
+
+--
+
+## Important Note: Ranges are always tied to a particular version of a genome
+
+---
+
+## An example of genomic ranges:
+
+--
+
+&nbsp;
+
+&nbsp;
+
+<div style="text-align:center"><img src="images/Figure9_1.png" alt="grep" style="width: 700px;" /></div>
+
+---
+
+## Flavors of range systems:
+
+--
+
+* 0-based systems: half-closed, half-open intervals
+
+--
+
+	* Range width = end - start
+	
+--
+
+* 1-based systems: closed intervals
+
+--
+
+	* Range width = end - start + 1
+	
+--
+
+<div style="text-align:center"><img src="images/Table9_1.png" alt="grep" style="width: 325px;" /></div>
+
+---
+
+## The Buffalo tutorials on genomic ranges use packages from the Bioconductor open source software project:
+
+* IRanges
+
+* GenomicRanges
+
+--
+
+### To Install Bioconductor's Primary Packages in R:
+
+
+```
+> source("http://bioconductor.org/biocLite.R")
+
+> biocLite()
+```
+
+--
+
+### GenomicRanges can be installed with:
+
+```
+> biocLite("GenomicRanges")
+```
+--
+
+### Bioconductor packages have great documentation:
+
+<http://www.bioconductor.org/packages/release/bioc/html/GenomicRanges.html>
+
+---
+
+ Let's begin working with ranges in the IRanges program which was installed as a dependency of GenomicRanges:
+
+```
+> library(IRanges)
+```
+--
+Ranges are created as "IRange Objects" by specifying start and end sites:
+
+```
+> rng <- IRanges(start=4, end=13)
+
+> rng
+IRanges of length 1
+	start end width
+[1] 4	13 	10
+```
+--
+
+Is this 1-based or 0-based?
+
+--
+
+Now try creating a range by specifying start site and width:
+
+```
+rng2 <- IRanges(start=4, width=3)
+
+rng2
+```
+---
+
+Ranges can also be created using vector arguments:
+
+```
+> x <- IRanges(start=c(4, 7, 2, 20), end=c(13, 7, 5, 23))
+
+> x
+```
+--
+
+And we can give these ranges names:
+
+```
+> names(x) <- letters[1:4]
+
+> x
+```
+--
+
+Note that the ranges we create are a special object with class IRanges:
+
+```
+> class(x)
+```
+--
+
+Components of this object can be accessed with start(x), end(x), width(x)
+
+--
+
+This can by handy when we want to increment one of these components:
+
+```
+> end(x) <- end(x) + 4
+
+> x
+```
+---
+
+The `range()` function can also be used to inspect the entire length of all ranges in an IRanges object:
+
+```
+> range(x)
+```
+
+--
+
+We can also take subsets of ranges in an IRanges object using numeric, logical, and character indices
+
+--
+
+For example, try the following:
+
+```
+> x[2:3]
+
+> start(x) < 5
+
+> x[start(x) < 5]
+
+> x[width(x) > 8]
+```
+
+--
+
+Ranges can also be merged, just as we've done with vectors using the `c()` command:
+
+```
+> a <- IRanges(start=7, width=4)
+
+> b <- IRanges(start=2, end=5)
+
+> c <- c(a, b)
+
+> c
+
+```
+
+---
+
+### Basic Range Operations:
+
+--
+
+IRanges objects can be grown or shrunk using arithmetic operations such as +, -, and * (division is not supported since it makes little sense with ranges)
+
+--
+
+For example, try:
+```
+> x <- IRanges(start=c(40, 80), end=c(67, 114))
+
+> x + 4L
+
+> x - 10L
+```
+--
+
+What's going on here?
+
+--
+
+<div style="text-align:center"><img src="images/Figure9_5.png" alt="grep" style="width: 500px;" /></div>
+
+---
+
+Sometimes, rather than growing or shrinking ranges, we want to restrict them within particular bounds
+
+--
+
+In this situation, the function `restrict()` comes in handy:
+
+```
+> y <- IRanges(start=c(4, 6, 10, 12), width=13)
+
+> y
+
+> restrict(y, 5, 10)
+```
+--
+
+What's happening here?
+
+--
+
+<div style="text-align:center"><img src="images/Figure9_6.png" alt="grep" style="width: 600px;" /></div>
+
+---
+
+Perhaps you would like to create entirely new ranges based on their relative position to ranges you already have
+
+--
+
+When might this be handy?
+
+--
+
+For this application, you would use the `flank()` command:
+
+```
+> flank(x, width=7)
+
+> flank(x, width=7, start=FALSE)
+
+> promoters <- flank(x, width=20)
+```
+
+--
+
+And here's a visual representation of these new ranges:
+
+<div style="text-align:center"><img src="images/Figure9_7.png" alt="grep" style="width: 500px;" /></div>
+
+---
+
+
+
+
+
+
+    </textarea>
+    <script src="https://gnab.github.io/remark/downloads/remark-latest.min.js" type="text/javascript">
+    </script>
+    <script>
+      var hljs = remark.highlighter.engine;
+    </script>
+    <script src="remark.language.js"></script>
+    <script>
+      var slideshow = remark.create({
+          highlightStyle: 'monokai',
+          highlightLanguage: 'tex',
+          highlightLines: true
+        }) ;
+    </script>
+    <script>
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-44561333-1']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script');
+        ga.src = 'https://ssl.google-analytics.com/ga.js';
+        var s = document.scripts[0];
+        s.parentNode.insertBefore(ga, s);
+      }());
+    </script>
+  </body>
+</html>
