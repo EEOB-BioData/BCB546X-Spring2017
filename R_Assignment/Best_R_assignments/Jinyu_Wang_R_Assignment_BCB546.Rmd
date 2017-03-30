@@ -1,0 +1,446 @@
+---
+title: "BCB546_HW2_R_Assignment(Jinyu Wang)"
+output:
+  html_document: default
+  html_notebook: default
+---
+
+
+
+##Part I 
+
+###Set the working directory and Load those two files into R
+
+```{r}
+#setwd("C:/Users/jinyuw/Desktop/BCB546_class/BCB546_HW1")
+fang <- read.table ("fang_et_al_genotypes.txt", header = T)
+snp <- read.delim ("snp_position.txt", header = T, sep = "\t")
+```
+
+###Data inspection: 
+####Use file.info() to Check file size. Use dim() and str() to check the dimension and structure of the above two files. And also use some other functions to check other features of those two datasets.
+
+```{r}
+
+fang_info <- file.info("fang_et_al_genotypes.txt")
+fang_info$size
+typeof(fang)
+class(fang)
+dim(fang)
+nrow(fang)
+ncol(fang)
+str(fang)
+fang[1:10, 1:10]
+summary(fang)
+
+########################this part is for "snp_position.txt"" file
+
+#object.size(snp_info)
+# snp_info <- file.info("snp.txt", header = T, sep = "\t") ###not sure how to checkc the file size of this type in r
+# snp_info$size
+typeof(snp)
+class(snp)
+dim(snp)
+nrow(snp)
+ncol(snp)
+str(snp)
+head(snp, n=2)
+summary(snp)
+
+```
+####From the above output:
+#####"fang_et_al_genotypes.txt" (size 11M, dimension 2782 X 986, #row 2782, #column 986)
+#####"snp_position.txt" (size 84k, dimension 983 X 15, #row 983,  #column 15)
+
+
+###Data Processing:
+
+####Subset data for the maize group and the teosinte group from file "fang_et_al_genotypes.txt".
+
+```{r}
+#Give a overview of the category in group
+summary(fang$Group) 
+#make a vector contain the maize group info and it will be used for subsetting the maize group
+maize_group <- c("ZMMIL", "ZMMLR", "ZMMMR")  
+maize <- fang[fang$Group %in% maize_group, ]
+#check the subsetted file with dim()
+dim(maize)
+##make all of them to be characters, add one line of colnames and this will make it easier after transpose the data
+maize[]<-lapply(maize, as.character)  
+#colnames(maize)
+maize <- rbind(colnames(maize), maize)
+dim(maize)
+
+#go through the same process as maize to subset the teosinte group and prepare it for transposing and data formatting
+teosinte_group <- c("ZMPBA", "ZMPIL", "ZMPJA")
+teosinte <- fang[fang$Group %in% teosinte_group, ]
+dim(teosinte)
+teosinte[] <- lapply(teosinte, as.character)
+teosinte <- rbind(colnames(teosinte), teosinte)
+
+```
+
+####Transpose the maize group data and teosinte group data
+
+```{r}
+#tanspose data using the t() and check the transposed file using the dim() and head()
+maize_t <- as.data.frame(t(maize), row.names = T) 
+dim(maize_t)
+#head(maize_t)
+
+
+teosinte_t <- as.data.frame(t(teosinte), row.names = T)
+dim(teosinte_t)
+#head(teosinte_t)
+
+```
+
+####Extract informaition from the snp_position.txt file for joining, basically extract the first, third and fourth columns
+```{r}
+#snp$Chromosome <- as.numeric(as.character(snps$Chromosome))
+#snp$Position <- as.numeric(as.character(snps$Position))
+snp_f <- snp[, c(1,3,4)]
+dim(snp_f)
+```
+
+
+
+####Clean and prepare transposed maize group data and teosinte group data for joining with the prepared snp_f df
+
+```{r}
+
+#get the column names using unlist() and using as.character make sure it is a character type vector
+colnames(maize_t) <- as.character(unlist(maize_t[1,]))
+#remove the first three rows in the maize data as we no not need those information
+maize_t <- maize_t[-c(1:3), ]
+#change the Sample_ID to SNP_ID
+colnames(maize_t)[1] <- "SNP_ID"  
+#colnames(maize_t)
+dim(maize_t)
+maize_t[1:5, 1:5]
+
+
+#go through similar analysis as in maize_t data
+colnames(teosinte_t) <- as.character(unlist(teosinte_t[1,]))
+teosinte_t <- teosinte_t[-c(1:3),]
+colnames(teosinte_t)[1] <- "SNP_ID"
+dim(teosinte_t)
+teosinte_t[1:5, 1:5]
+
+```
+
+
+####Using the merge() to merge the above maize_t with snp_f, and merge the teosinte_t with snp_f.
+
+```{r}
+maize_cb <- merge( snp_f, maize_t, by = "SNP_ID") 
+dim(maize_cb)
+#here we need to make all SNP call characters as it is required for replace '?/?' with '-/-'
+maize_cb[, -c(1:3)] <- lapply(maize_cb[, -c(1:3)], as.character)
+
+maize_cb[1:10, 1:10]
+teosinte_cb <- merge(snp_f,teosinte_t,  by = "SNP_ID")
+dim(teosinte_cb)
+teosinte_cb[, -c(1:3)] <- lapply(teosinte_cb[, -c(1:3)], as.character)
+#teosinte_cb[1:10, 1:10]
+
+```
+
+
+####order the two combined files based on chromsome and position both the ascending order and descending order respectively
+
+```{r}
+###using as.numeric(as.character()) force it to be numeric and sort by numeric only
+maize_cb_o <- maize_cb[order(as.numeric(as.character(maize_cb[,2])), as.numeric(as.character(maize_cb[,3]))), ]
+maize_cb_o[1:10, 1:10]
+maize_cb_or<- maize_cb[order(as.numeric(as.character(maize_cb[,2])), -as.numeric(as.character(maize_cb[,3]))), ]
+#maize_cb_or[1:10, 1:10]
+
+teosinte_cb_o <- teosinte_cb[order(as.numeric(as.character(teosinte_cb[,2])), as.numeric(as.character(teosinte_cb[,3]))), ]
+#teosinte_cb_o[1:10, 1:10]
+teosinte_cb_or<- teosinte_cb[order(as.numeric(as.character(teosinte_cb[,2])), -as.numeric(as.character(teosinte_cb[,3]))), ]
+#teosinte_cb_or[1:10, 1:10]
+
+```
+
+
+
+####subsetting the maize data and teosinte data for each chromosome and write the data out to the working directory
+
+```{r}
+
+for (i in 1:10){
+  maize_cb_chr <- maize_cb_o[maize_cb_o$Chromosome == i, ]
+  write.csv(maize_cb_chr, file= paste("maize_chr", i, ".csv", sep=""), row.names = F)
+}
+
+
+for (i in 1:10){
+  
+  maize_cb_chr_r <- maize_cb_or[maize_cb_or$Chromosome == i,]
+  maize_cb_chr_r[maize_cb_chr_r == "?/?"] <- "-/-"
+  write.csv(maize_cb_chr_r, file = paste ("maize_chr", i, "_reverse.csv", sep =""), row.names = F)
+}
+
+
+for (i in 1:10){
+  teosinte_cb_chr <- teosinte_cb_o[teosinte_cb_o$Chromosome == i, ]
+  write.csv(teosinte_cb_chr, file= paste("teosinte_chr", i, ".csv", sep=""), row.names = F)
+}
+
+
+for (i in 1:10){
+  
+  teosinte_cb_chr_r <- teosinte_cb_or[teosinte_cb_or$Chromosome == i,]
+  teosinte_cb_chr_r[teosinte_cb_chr_r == "?/?"] <- "-/-"
+  write.csv(teosinte_cb_chr_r, file = paste ("teosinte_chr", i, "_reverse.csv", sep =""), row.names = F)
+}
+
+
+
+```
+
+##Part II: Visualize the data with ggplot2
+
+####load all the package that might be needed for dataprocessing and graphing
+
+```{r}
+library(ggplot2)
+library(reshape2)
+library(tidyr)
+library(dplyr)
+
+```
+
+###Plot the total number of SNPs in our dataset on each chromosome. And find out what groups contribute most of these SNPs?
+```{r}
+##Format the data before plottting, using the melt() in reshape2 to reshape the original data
+##reload the data 
+#setwd("C:/Users/jinyuw/Desktop/BCB546_class/BCB546_HW1")
+fangs <- as.data.frame(read.table ("fang_et_al_genotypes.txt", sep = "\t", header = T))
+snps <- as.data.frame(read.table ("snp_position.txt", header = T, sep = "\t"))
+str(snps)
+fang1 <- fangs[, -2]
+dim(fang1)
+fang1[1:5, 1:5]
+
+
+fang_m <- melt(fang1, id = c("Sample_ID", "Group"))
+head(fang_m)
+colnames(fang_m)[c(3,4)] <- c("SNP_ID", "Allele")
+
+##Get the snp_f file and format it for data joining 
+snp_f <- snps[, c(1,3,4)]
+dim(snp_f)
+snp_f[snp_f == "unknown"] <- NA
+snp_f[snp_f == "multiple"] <- NA
+snp_f$Chromosome <- as.numeric(as.character(snp_f$Chromosome))
+snp_f$Position <- as.numeric(as.character(snp_f$Position))
+snp_f[1:10, 1:3]
+##now we can merge the snp_f and the fang_m by SNP_ID
+fs_m <- merge(snp_f, fang_m, by ="SNP_ID")
+dim(fs_m)
+head(fs_m)
+
+##fs_m[]<-lapply(fs_m, as.character) 
+##this step, I write a function to convert the missing values and the heterozygous genotype 
+
+convert_allele <- function(y) {
+  if ( y == "A/A" | y == "C/C" | y == "G/G" | y == "T/T") {
+    return(y)
+  }
+  else if (y == "?/?") {
+    return("N")
+  }
+  else {return("H")}
+}
+
+##then apply the convert_allele function 
+fs_m$converted_allele <- lapply(fs_m$Allele, convert_allele)
+fs_m$converted_allele <- as.character(fs_m$converted_allele)
+##get rid of missing values
+fs_m <- na.omit(fs_m)
+dim(fs_m)
+#head(fs_m)
+#tail(fs_m)
+
+```
+
+####After done with the merging and data formatting, next I calculate number of each SNP type in each different group category
+```{r}
+fs_m1 <- fs_m %>% group_by (SNP_ID,Group,Chromosome,Position, converted_allele) %>% summarize(n = n())
+#head(fs_m1)
+fs_m1 <- fs_m1 %>% arrange(Group, SNP_ID)
+#head(fs_m1)
+
+##after done with the first level of grouping, now i move to the second level of grouping, in here I need to get the count of SNP types
+##an "N" allele is also count as one snp_type, so only the number of snp_type is larger than one, the site is considered as a polymorphic ##snp
+fs_m2 <- fs_m1 %>% group_by (SNP_ID, Group, Chromosome, Position) %>% summarize(n = n())
+#head(fs_m2)
+
+##move to another level of grouping, the purpose here is only get those polymorphic snp sites
+fs_m3 <- fs_m2 %>% group_by (Group, Chromosome) %>% filter(n>1) %>% summarize(n = n())
+head(fs_m3)
+fs_m3$Chromosome <- as.character(fs_m3$Chromosome)
+
+
+
+##use ggplot to do the plotting and visualize the snp_density for each group 
+
+ggplot(fs_m3, aes(x = Group, y = n, fill = Group)) + geom_bar(stat = "identity") + 
+   theme_bw()+
+  theme(axis.text.x = element_blank(),axis.ticks.x = element_blank())
+
+##From the figure we could see that ZMMIL contribute most to the total snps.
+
+##plotting and visualize the snp_density for each chromosome 
+ggplot(fs_m3,aes(x = Chromosome, y = n, fill = Chromosome)) + geom_bar(stat = "identity") + 
+   theme_bw()+
+  theme(axis.text.x = element_blank(),axis.ticks.x = element_blank())
+
+rm(list=setdiff(ls(), c("fangs","snps")))
+
+```
+
+
+###Plot for Missing data and amount of heterozygosity
+
+```{r}
+
+fang1 <- fangs[, -2]
+dim(fang1)
+fang1[1:5, 1:5]
+
+fang_m <- melt(fang1, id = c("Sample_ID", "Group"))
+head(fang_m)
+colnames(fang_m)[c(3,4)] <- c("SNP_ID", "Allele")
+
+
+##this step, I write a function to convert the missing values to o and the heterozygous genotype to 1, homozygous to 2. This is to make it ##more convenient to calculate the heterozygosity of the data
+
+convert_allele1 <- function(y) {
+  if ( y == "A/A" | y == "C/C" | y == "G/G" | y == "T/T") {
+    return(2)
+  }
+  else if (y == "?/?") {
+    return("0")
+  }
+  else {return("1")}
+}
+
+fang_m$allele_index  <-lapply (fang_m$Allele, convert_allele1)
+fang_m$allele_index <- as.numeric (fang_m$allele_index)
+
+fang_m <- fang_m %>% arrange(Group, Sample_ID)
+head(fang_m)
+
+##calculate the number of snp_types within each Sample and Group combination
+
+fang_m1 <- fang_m %>% group_by (Group, Sample_ID, allele_index)  %>% summarize (n = n())
+
+##Since we want to know the Missing data and heterozygosity for each of the group, so the total number of snps within each of those combinations are needed
+fang_m2 <- fang_m %>% group_by (Group, Sample_ID )  %>% summarize (Total = n())
+fang_m2 <- fang_m2[, -1]
+##next step is to merge the above two dataframes
+fang_m3 <- merge(fang_m1, fang_m2, by = "Sample_ID")
+
+##next step calculate the percentage for each class
+fang_m3$percent <- fang_m3$n/fang_m3$Total
+#fang_m3
+
+##sort the data again
+
+fang_m4 <- fang_m3 %>% arrange(Group, Sample_ID) 
+
+##Try to relabel the allele_index so that it is more clear labeled after we plot the figure
+
+fang_m4$allele_index <- ordered( fang_m4$allele_index, levels= c(0, 1, 2), labels = c("% Missing","% Homozygous","% Heterozygous"))
+
+head(fang_m4)
+
+##plot the figure with ggplot2
+
+ggplot(data = fang_m4, aes(x = Sample_ID, y = percent,colour = Group)) + 
+  geom_point() + facet_grid(~ allele_index) 
+
+rm(list=setdiff(ls(), c("fangs","snps")))
+
+
+```
+###plot3, I want to look at the percentage of homozygote snp types distribution across each of the  chromosome
+
+```{r}
+str(snps)
+fang1 <- fangs[, -2]
+dim(fang1)
+fang1[1:5, 1:5]
+
+fang_m <- melt(fang1, id = c("Sample_ID", "Group"))
+#head(fang_m)
+colnames(fang_m)[c(3,4)] <- c("SNP_ID", "Allele")
+##Get the snp_f file and format it for data joining 
+snp_f <- snps[, c(1,3,4)]
+dim(snp_f)
+snp_f[snp_f == "unknown"] <- NA
+snp_f[snp_f == "multiple"] <- NA
+snp_f$Chromosome <- as.numeric(as.character(snp_f$Chromosome))
+snp_f$Position <- as.numeric(as.character(snp_f$Position))
+snp_f[1:10, 1:3]
+##now we can merge the snp_f and the fang_m by SNP_ID
+fs_m <- merge(snp_f, fang_m, by ="SNP_ID")
+dim(fs_m)
+#head(fs_m)
+fs_m <- na.omit(fs_m)
+
+##next I will subset the data and get only the columns that I needed
+fs_m1 <- fs_m[fs_m$Allele == "A/A" |  fs_m$Allele == "C/C"|fs_m$Allele == "T/T" | fs_m$Allele == "G/G", c(2, 6)]
+#head(fs_m1)
+dim(fs_m1)
+class(fs_m1$Chromosome)
+fs_m1$Chromosome <- as.character(fs_m1$Chromosome)
+
+##next I will count the number of each type of homozygous snps on each chromosome
+
+fs_m2 <- fs_m1 %>% arrange(Chromosome, Allele) %>% group_by(Chromosome, Allele) %>% summarize (n = n())
+#head(fs_m2)
+
+##next I need to get the total number of each type of homozygous snps on each chrosome, so next step I can calculate the percentage for ##each of them
+
+fs_m3 <- fs_m1 %>% group_by(Chromosome) %>% summarize (Total = n())
+#head(fs_m3)
+
+##next merge the two data set
+
+fs_m4 <- merge(fs_m2 , fs_m3, by = "Chromosome")
+#(fs_m4)
+fs_m4$Percent <- fs_m4$n/fs_m4$Total
+dim(fs_m4)
+#head(fs_m4)
+
+##then plot the figure for visualization the percentage of each type of homozygous genotype for each chromosome
+
+ggplot(data = fs_m4, aes(x = Chromosome, y = Percent,colour = Allele)) + 
+  geom_point()  
+
+
+ggplot(data =fs_m4,aes(x = Allele, y = Percent, fill = Allele)) + 
+  geom_bar(stat = "identity", position = "dodge") + 
+  facet_wrap(~ Chromosome,  scales = "free_y",nrow = 5, ncol = 2 ) + theme_bw() +theme(axis.text.x = element_blank(),axis.ticks.x = element_blank())
+
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

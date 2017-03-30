@@ -96,7 +96,7 @@ species_list = list(bear_df.species)
 ## Write a for-loop that translates each sequence and also gets the proportion
 ## of each aa type in that translated sequence and adds those data to dataframe
 # for key, value in cytb_seqs.items():
-#     aa_seq = nuc2aa_translate_function(vale)
+#     aa_seq = nuc2aa_translate_function(value) # whichever function you prefer of #2 or #3
 #     # get proportions of each aa type
 #     set the value of each proportion in the dataframe (i.e., fill in empty cells in DF)
 
