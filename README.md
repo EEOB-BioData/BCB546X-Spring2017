@@ -68,7 +68,7 @@ Be sure to check the schedule for updates.
 
 * Overview of group projects
 * LaTeX [[slides LaTeX source](https://www.sharelatex.com/project/58d9b0d9b610a7f176ff5e81) or [PDF](https://github.com/EEOB-BioData/BCB546X-Spring2017/blob/master/Week_11/lecture_28Mar-TAH.pdf)] 
-* Working with Range Data
+* [Working with Range Data](http://eeob-biodata.github.io/BCB546X-Spring2017/Week_11/lecture_30Mar-MBH.html)
 
 ## Final Group Project
 

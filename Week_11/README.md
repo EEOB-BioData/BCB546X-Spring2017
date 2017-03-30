@@ -11,6 +11,6 @@ The PDF of the lecture slides is also available in the course repository: [https
 
 ## Wednesday, 3/30
 
-Slides on first part of genomic range lecture are in file titled "lecture_30Mar-MBH.html".
+Slides on first part of genomic range lecture are in file titled "lecture_30Mar-MBH.html". (You can also access the slides online from this link: [http://eeob-biodata.github.io/BCB546X-Spring2017/Week_11/lecture_30Mar-MBH.html](http://eeob-biodata.github.io/BCB546X-Spring2017/Week_11/lecture_30Mar-MBH.html).)
 
 /images folder contains figures included in this presentation
