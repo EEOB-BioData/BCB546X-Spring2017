@@ -70,6 +70,11 @@ Be sure to check the schedule for updates.
 * LaTeX [[slides LaTeX source](https://www.sharelatex.com/project/58d9b0d9b610a7f176ff5e81) or [PDF](https://github.com/EEOB-BioData/BCB546X-Spring2017/blob/master/Week_11/lecture_28Mar-TAH.pdf)] 
 * [Working with Range Data](http://eeob-biodata.github.io/BCB546X-Spring2017/Week_11/lecture_30Mar-MBH.html)
 
+**[Week 12](https://github.com/EEOB-BioData/BCB546X-Spring2017/tree/master/Week_12)**
+
+* [Working with Range Data continued](http://eeob-biodata.github.io/BCB546X-Spring2017/Week_12/lecture_04Apr-MBH.html#38)
+
+
 ## Final Group Project
 
 The group projects will be due at the end of the semester during the last two class meetings, where each group will give a presentation on their work. 
