@@ -73,6 +73,8 @@ Be sure to check the schedule for updates.
 **[Week 12](https://github.com/EEOB-BioData/BCB546X-Spring2017/tree/master/Week_12)**
 
 * [Working with Range Data continued](http://eeob-biodata.github.io/BCB546X-Spring2017/Week_12/lecture_04Apr-MBH.html#38)
+* [Working with Sequence Data](http://eeob-biodata.github.io/BCB546X-Spring2017/Week_12/lecture_06Apr-TAH.html)
+
 
 
 ## Final Group Project
