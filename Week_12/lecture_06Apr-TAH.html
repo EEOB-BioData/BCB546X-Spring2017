@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="keywords" content="sequence data, alignment, SAM/BAM, fasta, fastq" />
+    <meta name="description" content="Lecture on sequence data and alignment." />
+    <title>BCB 546X -- 19 Jan 2017</title>
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Droid+Serif);
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+      body {
+        font-family: 'Droid Serif';
+      }
+      h1, h2, h3 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: 400;
+        margin-bottom: 0;
+      }
+      .remark-slide-content h1 { font-size: 3em; }
+      .remark-slide-content h2 { font-size: 2em; }
+      .remark-slide-content h3 { font-size: 1.6em; }
+      .footnote {
+        position: absolute;
+        bottom: 3em;
+      }
+      li p { line-height: 1.25em; }
+      .red { color: #fa0000; }
+      .large { font-size: 2em; }
+      a, a > code {
+        color: rgb(249, 38, 114);
+        text-decoration: none;
+      }
+      code {
+        background: #e7e8e2;
+        border-radius: 5px;
+      }
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+      .remark-code-line-highlighted     { background-color: #373832; }
+      .pull-left {
+        float: left;
+        width: 47%;
+      }
+      .pull-right {
+        float: right;
+        width: 47%;
+      }
+      .pull-right ~ p {
+        clear: both;
+      }
+      #slideshow .slide .content code {
+        font-size: 0.8em;
+      }
+      #slideshow .slide .content pre code {
+        font-size: 0.9em;
+        padding: 15px;
+      }
+      .inverse {
+        background: #272822;
+        color: #777872;
+        text-shadow: 0 0 20px #333;
+      }
+      .inverse h1, .inverse h2 {
+        color: #f3f3f3;
+        line-height: 0.8em;
+      }
+      /* Two-column layout */
+      .left-column {
+        color: #777;
+        width: 20%;
+        height: 92%;
+        float: left;
+      }
+        .left-column h2:last-of-type, .left-column h3:last-child {
+          color: #000;
+        }
+      .right-column {
+        width: 75%;
+        float: right;
+        padding-top: 1em;
+      }
+      .coolBorder {
+        border: 2px solid purple;
+        border-radius: 20px;
+        padding: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+class: center, middle
+
+# Sequence Data & Alignment
+
+???
+
+Notes for the _first_ slide!
+
+---
+
+# Sequence Data & Alignment
+
+## Outline
+
+* Python homework
+* Understanding FASTA and FASTQ file formats
+* Interpret FASTQ quality metrics 
+    * download [FastQC](http://www.bioinformatics.babraham.ac.uk/projects/download.html#fastqc)
+    * pull from [course repository](https://github.com/EEOB-BioData/BCB546X-Spring2017) to get `Week_12/data` files
+* Bioinformatics pipelines
+* Discussion
+
+---
+
+# FASTA
+
+The FASTA file format was developed for the [FASTA alignment software package](http://fasta.bioch.virginia.edu/fasta_www2/fasta_list2.shtml).
+
+--
+
+A FASTA file is a plain-text file for storing sequences. Each sequence is represented by 2 parts:
+
+1. The description line starting with `>` 
+2. The sequence (can be a single line or interleaved)
+
+--
+
+A sequence from [`bears_cytb.fasta`](https://github.com/EEOB-BioData/BCB546X-Spring2017/blob/master/Python_Assignment/pyhw-files/bears_cytb.fasta). 
+This sequence was downloaded from NCBI.
+
+```
+>AB020907.1 Ursus arctos mitochondrial gene for cytochrome b, complete cds
+ATGACCAACATCCGAAAAACCCACCCATTAGCTAAAATCATCAACAACTCACTTATTGACCTTCCAACAC
+CATCAAACATCTCAGCATGATGAAACTTTGGATCCCTCCTTGGAGTATGTTTAATTCTACAGATTCTAAC
+AGGCCTGTTCCTAGCCATACACTATACACCAGACACAACCACAGCTTTTTCATCGGTCACCCACATTTGC
+CGAGACGTCCACTACGGATGAGTTATCCGATATGTACATGCAAATGGAGCCTCCATCTTCTTTATCTGCC
+TATTTATGCACGTAGGACGGGGCCTGTACTATGGCTCATACCTATTCTCAGAAACATGAAACATTGGCAT
+TATTCTCCTATTTACAATTATAGCCACCGCATTTATAGGATACGTCCTACCCTGGGGCCAAATGTCCTTC
+TGAGGAGCGACTGTCATCACCAATCTACTATCGGCCATTCCCTACATCGGAACGGACCTGGTAGAATGAA
+TCTGAGGGGGCTTTTCCGTAGATAAAGCGACCCTAACACGATTCTTTGCTTTCCACTTTATTCTCCCGTT
+CATCATCCTAGCACTAGCAGCAGTCCATCTATTGTTCCTACACGAAACAGGATCTAACAACCCCTCTGGA
+ATCCCATCTGACTCAGACAAAATCCCCTTCCATCCATACTATACAATTAAAGATATTCTAGGCGCCCTAC
+TTCTCGCCCTAACCTTAGCAACCCTAGTCCTATTCTCGCCCGACTTACTAGGAGACCCTGATAACTATAC
+...
+```
+
+---
+
+# FASTA
+
+There can be variation in the format of the description line. 
+
+```
+$ grep "^>" bears_cytb.fasta
+>AF264047.1 Ursus spelaeus cytochrome b gene, complete cds; mitochondrial gene for mitochondrial product
+>AB020907.1 Ursus arctos mitochondrial gene for cytochrome b, complete cds
+>AB360958.1 Ursus thibetanus mitochondrial cytb gene for cytochrome b, complete cds, haplotype: Cb-C1
+>U23562.1 Melursus ursinus cytochrome b gene, mitochondrial gene encoding mitochondrial protein, isolate URUR2, complete cds
+>AF268271.1 Ursus americanus specimen-voucher AF21120 cytochrome b gene, complete cds; mitochondrial gene for mitochondrial product
+>U18899.1 Helarctos malayanus mitochondrion cytochrome b (cyt b) gene, complete cds
+>U23552.1 Ailuropoda melanoleuca cytochrome b gene, mitochondrial gene encoding mitochondrial protein, complete cds
+>U23554.1 Tremarctos ornatus cytochrome b gene, mitochondrial gene encoding mitochondrial protein, complete cds
+>EU567096.1 Ursus maritimus haplotype Umar cytochrome b (cob) gene, complete cds; mitochondrial
+```
+
+
+This makes it very difficult to write generic parsers for FASTA files. 
+
+It is important to use a consistent convention for FASTA sequence descriptions.
+
+---
+
+# FASTQ
+
+The FASTQ format was developed to store a FASTA-formatted sequence and the associated quality scores.
+
+Each entry typically has 4 parts:
+
+1. A header line beginning with `@` containing the record identifier and other information.
+2. The DNA sequence (can be on 1 or many lines)
+3. A line beginning with just `+`
+4. Quality scores for each base encoded in ASCII format
+
+--
+
+<br>
+
+The first entry in [`untreated1_chr4.fq`](https://github.com/vsbuffalo/bds-files/blob/master/chapter-10-sequence/untreated1_chr4.fq) 
+from *Bioinformatics Data Skills*.
+
+```
+$ head -4 untreated1_chr4.fq 
+@SRR031729.3941844
+GGACAACCTAGCCAGGAAAGGGGCAGGGAACCCTCTAATTGGGCCCGAACCATTCTGTGGTGTTGGTCACCACAG
++
+BC?BABABBA@BCBAC>A<4+?BA><B=@?AB@B@A>?BB=B.?7?>1;<??=@A8?8=B8B>?B@46==8863<
+```
+
+
+---
+
+# FASTQ
+
+The first entry in [`untreated1_chr4.fq`](https://github.com/vsbuffalo/bds-files/blob/master/chapter-10-sequence/untreated1_chr4.fq) 
+from *Bioinformatics Data Skills*.
+
+```
+$ head -4 untreated1_chr4.fq 
+@SRR031729.3941844
+GGACAACCTAGCCAGGAAAGGGGCAGGGAACCCTCTAATTGGGCCCGAACCATTCTGTGGTGTTGGTCACCACAG
++
+BC?BABABBA@BCBAC>A<4+?BA><B=@?AB@B@A>?BB=B.?7?>1;<??=@A8?8=B8B>?B@46==8863<
+```
+
+<br>
+
+<div style="text-align:center"><img src="images/ascii_qual.png" alt="gource" width="750" /></div>
+
+---
+
+# Converting Quality Scores
+
+<div style="text-align:center"><a href="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/ASCII-Table-wide.svg/1280px-ASCII-Table-wide.svg.png"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/ASCII-Table-wide.svg/1280px-ASCII-Table-wide.svg.png" alt="gource" width="750" /></a></div>
+
+---
+
+# Converting Quality Scores
+
+In Python we can use the function `ord()` to covert an ASCII character to its numerical value:
+
+```
+>>> ord('T')
+84
+```
+
+--
+
+This enables us to easily evaluate a sequence's quality scores. Let's start a new Python instance (in a Jupyter notebook).
+
+---
+
+# Evaluating a Seqence's Quality Scores
+
+Create a variable called `qual` and give it the value of the quality score string.
+
+```
+qual = 'BC?BABABBA@BCBAC>A<4+?BA><B=@?AB@B@A>?BB=B.?7?>1;<??=@A8?8=B8B>?B@46==8863<'
+```
+
+--
+
+We will use the Sanger quality scheme, which means that the ASCII values are offset by 33. 
+So we need to convert each character to its numerical value and subtract 33.
+
+--
+
+```
+phred = [ord(b)-33 for b in qual]
+```
+The above code is called a [*list comprehension*](http://python-3-patterns-idioms-test.readthedocs.io/en/latest/Comprehensions.html) in Python. This is a shorthand way of making a list
+that is effectively a `for` loop.
+
+This is the same as above:
+
+```
+phred = []
+for b in qual:
+    phred += [ord(b)-33]
+```
+
+---
+
+# Evaluating a Seqence's Quality Scores
+
+We can now convert the Sanger quality scores to probabilities given that:
+
+<center><i>P = 10<sup>-Q/10</sup></i></center>
+
+```
+pr_phred = [10**(-q/10) for q in phred]
+```
+
+This list now contains the *probability* that each base is correct. 
+
+--
+
+In our notebook, we can also visualize these quality scores.
+
+```
+import seaborn as sns
+%matplotlib inline
+sns.pointplot(x=list(range(len(pr_phred))),y=pr_phred)
+```
+
+<div style="text-align:center"><img src="images/snsplt1.png" alt="gource" width="300" /></div>
+
+---
+
+# Evaluating a Seqence's Quality Scores
+
+Or see how the probability corresponds to the Phred score:
+
+```
+sns.pointplot(x=phred,y=pr_phred)
+```
+<div style="text-align:center"><img src="images/snsplt2.png" alt="gource" width="500" /></div>
+
+---
+# Evaluating a Seqence's Quality Scores
+
+We can also look at the distribution of Phred scores:
+
+```
+sns.distplot(phred)
+```
+
+<div style="text-align:center"><img src="images/snsplt3.png" alt="gource" width="500" /></div>
+
+---
+# Evaluating a Seqence's Quality Scores
+
+With BioPython we can easily access the contents of a FASTQ file and convert the quality scores.
+We will do this with just the first 8 reads in the `untreated1_chr4.fq` file:
+
+```
+from Bio import SeqIO
+
+count = 0
+for record in SeqIO.parse("untreated1_chr4.fq", "fastq"):
+    sns.distplot(record.letter_annotations["phred_quality"])
+    count += 1
+    if count > 8:
+       break
+```
+<div style="text-align:center"><img src="images/snsplt4.png" alt="gource" width="370" /></div>
+
+---
+
+# Summarizing a FASTQ File
+
+The program [FastQC](http://www.bioinformatics.babraham.ac.uk/projects/download.html#fastqc) provides a way for you to summarize
+and visually inspect your FASTQ file.
+
+<div style="text-align:center"><img src="images/fastqc1_sc.png" alt="gource" width="600" /></div>
+
+---
+
+# Summarizing a FASTQ File
+
+The per-base sequence quality view allows you to visualize the distribution of quality scores per position over all sequences in the file.
+
+<div style="text-align:center"><img src="images/fastqc1.png" alt="gource" width="600" /></div>
+
+---
+
+# Trimming Low-Quality Bases
+
+In *Bioinformatics Data Skills* two command-line tools are used to trim sequences. These are [`sickle`](https://github.com/najoshi/sickle) and [`seqtk`](https://github.com/lh3/seqtk). Since these tools
+are not available for all operating systems, the trimmed files are in the course repository.
+Both are easy to install on Mac OS X if you use Homebrew.
+
+Default trimming a single-end read with `sickle se`:
+
+```
+$ sickle se -f untreated1_chr4.fq -t sanger -o untreated1_chr4_sickle.fq
+```
+
+<br>
+
+Default trimming a single-end read with `seqtk trimfq`:
+
+```
+$ seqtk trimfq untreated1_chr4.fq > untreated1_chr4_trimfq.fq
+```
+
+---
+
+# Trimming Low-Quality Bases
+
+We can use FastQC to inspect our trimmed files.
+
+The book, *Bioinformatics Data Skills*, provides an R-script for plotting a similar comparison:
+
+<div style="text-align:center"><img src="images/fastqscores.png" alt="gource" width="570" /></div>
+
+
+---
+
+
+# Bioinformatics Pipelines
+
+<br>
+
+<div class="coolBorder">
+"<i>Bioinformatic analyses invariably involve shepherding files through a series of transformations, called a pipeline or a workflow. 
+Typically, these transformations are done by third-party executable command line software written for Unix-compatible operating systems.</i>"
+<br>
+<br>
+
+Leipzig. 2016 "A review of bioinformatic pipeline frameworks". <i>Briefings in Bioinformatics,</i> <a href="https://doi.org/10.1093/bib/bbw020">doi.org/10.1093/bib/bbw020</a>.
+</div>
+
+<br>
+
+--
+You will certainly discover that most bioinformatics pipelines are extremely "brittle".
+Because they rely on multiple third-party programs, R and Python packages, specific directory structures, etc., 
+if one component in a pipeline fails or is updated or depricated, then the whole pipeline can fail. 
+
+---
+# Bioinformatics Pipelines
+
+"A DAG (Directed Acyclic Graph) depicting a trio analysis pipeline for detecting de novo mutations." (Fig. 1 from Leipzig, 2016)
+
+<div style="text-align:center"><a href="http://bit.ly/2nI1BKJ"><img src="https://oup.silverchair-cdn.com/oup/backfile/Content_public/Journal/bib/PAP/10.1093_bib_bbw020/2/m_bbw020f1p.jpeg?Expires=1491541278&Signature=E9IxXwR9VzzRlK7FoFDSDTNEDAJy-vWStZAMlTklpbDj8fAlgmbCHGpslpIefBybQ5y0DLof1dMOs55HE0p0FRO5RpWgfBeLur91X68TeuBlLUUZX8r5Q7PiWk4F8pYIfpC098rF4s2cwRKIp2HGbK3w6~UNgmKwCjkOHi4lfYrpZXBGM0CnOHtvZSqafgDjeJb0RRnt2hx43wsNwLNVJcnrzTVMYhZwOQ3BW7iB2WlNmR6UFTaARtMiWJ2fQLkV8wnXxqza9TCobh4HyjBMasMjdRKumtV5AokwAD4cexbZ2Dek~cY1ldgHHNuVxnGML6TpE8Wbm3I-VzHDa0HuRQ__&Key-Pair-Id=APKAIUCZBIA4LVPAVW3Q" alt="gource" width="250" /></a></div>
+
+
+
+---
+
+# Example: Targeted Resequencing
+
+Li et al. 2014. "Bioinformatics Pipelines for Targeted Resequencing and Whole-Exome Sequencing of Human and Mouse Genomes: A Virtual Appliance Approach for Instant Deployment". PLoS One, [http://dx.doi.org/10.1371/journal.pone.0095217](http://dx.doi.org/10.1371/journal.pone.0095217).
+
+<div style="text-align:center"><a href="http://journals.plos.org/plosone/article/figure/image?size=large&id=10.1371/journal.pone.0095217.g001"><img src="http://journals.plos.org/plosone/article/figure/image?size=large&id=10.1371/journal.pone.0095217.g001" alt="gource" width="300" /></a></div>
+
+
+---
+
+# Example: Phylogenomics
+
+Dunn, Howison, Zapata. 2013. "Agalma: an automated phylogenomics workflow". *BMC Bioinformatics*: [DOI: 10.1186/1471-2105-14-330](http://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-14-330).
+
+[https://bitbucket.org/caseywdunn/agalma](https://bitbucket.org/caseywdunn/agalma)
+
+<div style="text-align:center"><a href="https://bitbucket.org/caseywdunn/agalma"><img src="images/agalma.png" alt="gource" width="750" /></a></div>
+(screen capture)
+
+---
+
+# Real Talk
+
+The last time I did any sequencing it was on a machine that looked like this:
+
+<div style="text-align:center"><a href="http://cgil.uoguelph.ca/QTL/P5300005.JPG"><img src="http://cgil.uoguelph.ca/QTL/P5300005.JPG" alt="gource" width="500" /></a></div>
+
+The ABI 377 now sells on [Ebay](http://www.ebay.com/itm/ABI-Applied-Biosystems-Prism-377-DNA-Sequencer-/382025199048?hash=item58f279edc8:g:1OMAAOSwmgJY3rVH) for $200-1,300.
+
+---
+
+# Discussion
+
+Since I have no practical experience in modern sequence data generation/assembly, I think this is a good time for some discussion.
+
+* What are the sequencing technologies you are using to collect data?
+* What are the practical considerations for assembling your datasets?
+* What frameworks are used for developing a standard workflow?
+* What are the outcomes of your pipelines?
+* What are your concerns about approaches to data assembly in your research?
+* Most of these questions also apply to those of you who are not generating sequence data.
+
+---
+
+# Resources
+
+* Jonathan Eisen's talk on [The Evolution of DNA Sequencing](http://www.microbe.net/2015/10/22/evolution-of-dna-sequencing-2015-version/)
+* Mardis. 2008. "Next-Generation DNA Sequencing Methods." *Annual Review of Genomics and Human Genetics*, [DOI: 10.1146/annurev.genom.9.081307.164359](http://annualreviews.org/doi/full/10.1146/annurev.genom.9.081307.164359).
+* 2017 [Workshop on Genomics](http://evomics.org/workshops/workshop-on-genomics/2017-workshop-on-genomics-cesky-krumlov/) (tutorials and teaching materials on various topics)
+* Online [lectures on bioinformatics](http://lectures.molgen.mpg.de/online_lectures.html)
+
+    </textarea>
+    <script src="https://gnab.github.io/remark/downloads/remark-latest.min.js" type="text/javascript">
+    </script>
+    <script>
+      var hljs = remark.highlighter.engine;
+    </script>
+    <script src="remark.language.js"></script>
+    <script>
+      var slideshow = remark.create({
+          highlightStyle: 'monokai',
+          highlightLanguage: 'tex',
+          highlightLines: true
+        }) ;
+    </script>
+    <script>
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-44561333-1']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script');
+        ga.src = 'https://ssl.google-analytics.com/ga.js';
+        var s = document.scripts[0];
+        s.parentNode.insertBefore(ga, s);
+      }());
+    </script>
+  </body>
+</html>
