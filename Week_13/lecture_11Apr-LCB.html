@@ -115,7 +115,7 @@ Notes for the _first_ slide!
 # Computer Architecture & Monitoring
 
 ## Simple, stupid computer architecture diagram
-[inspired by Mark Richter] (https://www.redhat.com/en/about/blog/authors/marc-richter)
+[inspired by Mark Richter](https://www.redhat.com/en/about/blog/authors/marc-richter)
 ```      |
  CPU     | Memory
          |
@@ -128,7 +128,7 @@ Notes for the _first_ slide!
 
 --
 
-# Monitoring
+## Monitoring
 
 * htop (or top)
 * iostat
@@ -144,17 +144,22 @@ There are other tools, but these will get you the basic info you need and are in
 
 ## Terms
 
+* Server related
+  * Nodes / slave node / compute node
+  * Head node
+  * Data transfer node
+  *
 * CPU related
-  * Processors
-  * Cores
-  * Threads
-  * Sockets
-  * Cache
-    * L2 (fastest)
-    * L3 (faster)
+  * Processors (a cpu chip)
+  * Sockets (the slot on the motherboard a cpu connects to)
+  * Cores (physical cpus embedded on a single chip)
+  * Threads / hyper-threading (software 'trick' to let two processes share a core)
+  * Cache (keeps data close to the CPU)
+    * L2 (fastest / smallest / closest)
+    * L3 (faster / small / close)
 * Memory related
-  * RAM / Memory (fast)
-  * SWAP (not so fast)
+  * RAM / Memory (fast / bigger / further away)
+  * SWAP (not so fast / big / furthest - on disk)
   * NUMA (non uniform memory access)
 
 ---
@@ -164,10 +169,10 @@ There are other tools, but these will get you the basic info you need and are in
   * Disk (HDD, SDD)
   * I/O
 * Network related
+  * TCP/IP
+  * RDMA
   * Infiniband / IB / Omnipath / Mellanox
-  * Gigabit
-* OS related
-  * Kernel
+  * Gigabit (building speed)
 
 ---
 
@@ -180,19 +185,6 @@ There are other tools, but these will get you the basic info you need and are in
   * MPI
   * OpenMP
   * SPMD, MIMD [Flynn's taxonomy](https://en.wikipedia.org/wiki/Flynn%27s_taxonomy)
-
----
-
-# Groups who provide HPC support
-
-* [Research IT](http://rit.las.iastate.edu)
-    * Build software, run custom hardware, consult on performance improvements, etc.
-    * Collaboration between LAS, CALS, IT, etc. http://rit.las.iastate.edu/people
-    * researchit@iastate.edu
-    * IRC (chat): &#35;bitcom on freenode
-* [ISU IT HPC Team](http://hpc.iastate.edu)
-    * Cluster Support team
-    * hpc-help@iastate.edu
 
 ---
 
@@ -247,6 +239,12 @@ There are other tools, but these will get you the basic info you need and are in
 * For problems that need to scale larger than our on-campus resources
 * Contact campus champoins: Jim Coyle or Andrew Severin
 
+## Cloud (AWS, Azure, etc.)
+* Tempting introductory rates
+* Be cautious of putting in a credit card (charges can accumulate quickly)
+* Consider data transfer times and speed
+* Consult with IT before purchasing - we have special negotiated rates
+
 ---
 
 # UNIX for HPC at Iowa State
@@ -282,8 +280,11 @@ afni/17.0.10             gapfiller/1-10           lib/htslib/1.3.2         mira/
 albert/20170105          gatk/3.4-46              lib/ICE/1.0.9            mirdeep/2.0.0.7          ruby/2.3.0
 ...
 ```
+* Look for keywords like 'MPI, parallel, OpenMP'
+* [Search](https://researchit.las.iastate.edu/available-software) for similar programs that may scale up better
 
 ---
+
 # Software
 
 ## Modules
@@ -296,30 +297,50 @@ $ module load abyss
 * Use 'module purge' to clear your environment before loading something different
 
 ---
+
 # Storage
 
-## Code in Git (github, bitbucket, gitlab, etc.)
+## Code
+* Git (github, bitbucket, gitlab, etc.)
 
 ## Datasets
 * Storage on the clusters and servers should be treated as temporary
-* Varying levels of speed and resiliency (generally faster = more volatile)
+* Varying levels of speed and resiliency (generally faster is smaller, and more volatile)
+* Become familiar with the [disk architecture on each machine](https://researchit.las.iastate.edu/getting-best-io-performance-your-computational-jobs)
 * Use network storage such as my.files, box, github, etc.
 * Keep backups
 
 ---
+
 # Job Scheduler
 
+* Scheduler assigns jobs from the queue to the compute nodes
+* We use [SLURM](https://researchit.las.iastate.edu/slurm-basics)
+* Think about the scheduler like a hotel reservation - you're charged for the room whether you use it or not, and if you ask for an especially long or large reservation, the room may not be available when you want it.
+* Basic info required: how many nodes, how long
 
 ---
+
 # Common stumbling blocks
 
-
+* Over or under using resources
+* Not taking advantage of the right machine for the problem
+* Moving data through slow links
+* Trying to scale up programs that weren't designed for large datasets
 
 ---
-# Resources
 
-* [ISU Research IT website](http://hpc.iastate.edu)
-* [ISU HPC website](http://rit.las.iastate.edu)
+# Support
+
+* [Research IT](http://rit.las.iastate.edu)
+    * Build software, run custom hardware, consult on performance improvements, etc.
+    * Collaboration between LAS, CALS, IT, etc. http://rit.las.iastate.edu/people
+    * researchit@iastate.edu
+    * IRC (chat): &#35;bitcom on freenode
+* [ISU IT HPC Team](http://hpc.iastate.edu)
+    * Cluster Support team
+    * hpc-help@iastate.edu
+
 
     </textarea>
     <script src="https://gnab.github.io/remark/downloads/remark-latest.min.js" type="text/javascript">
