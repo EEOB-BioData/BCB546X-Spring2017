@@ -148,7 +148,11 @@ There are other tools, but these will get you the basic info you need and are in
   * Nodes / slave node / compute node
   * Head node
   * Data transfer node
-  *
+
+---
+
+## Terms
+
 * CPU related
   * Processors (a cpu chip)
   * Sockets (the slot on the motherboard a cpu connects to)
@@ -163,7 +167,8 @@ There are other tools, but these will get you the basic info you need and are in
   * NUMA (non uniform memory access)
 
 ---
-# Terminology
+
+## Terms
 
 * Disk related
   * Disk (HDD, SDD)
@@ -260,7 +265,7 @@ There are other tools, but these will get you the basic info you need and are in
 * [CentOS](https://www.centos.org/) is the downstream server distribution
 * When you google linux questions, you'll inevitably get results for Ubuntu
     * results can point you in the right direction, but interpret and understand - don't just copy & paste
-    * sudo apt-get install *** will not work for you on our systems
+    * sudo apt-get install - will not work for you on our systems
 
 ---
 
@@ -318,6 +323,25 @@ $ module load abyss
 * We use [SLURM](https://researchit.las.iastate.edu/slurm-basics)
 * Think about the scheduler like a hotel reservation - you're charged for the room whether you use it or not, and if you ask for an especially long or large reservation, the room may not be available when you want it.
 * Basic info required: how many nodes, how long
+* [Script writer](http://www.hpc.iastate.edu/guides/condo2017/slurm-job-script-writer) can get you started
+
+## Sample SLURM script (mysbatch.sh)
+
+```
+#!/bin/bash
+#SBATCH --time=1:00:00   # walltime
+#SBATCH --nodes=2   # number of nodes in this job
+#SBATCH --ntasks-per-node=16   # total number of processor cores in this job
+#SBATCH --output=myout_%J.log
+#SBATCH --error=myerr_%J.err
+module load R
+Rscript MyThing.R
+```
+
+Then submit:
+```
+$ sbatch mysbatch.sh
+```
 
 ---
 
