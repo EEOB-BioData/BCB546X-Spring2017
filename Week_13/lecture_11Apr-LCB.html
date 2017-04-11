@@ -92,7 +92,8 @@
 
 class: center, middle
 
-# High Performance Computing
+# HPC
+<div style="text-align:center"><img src="images/captain-lionel-mandrake-high-performance-computing-or-how-i-learned-to-stop-worrying-and-love-linux.jpg" alt="High Performance Computer or: How I Learned to Stop Worrying and Love Linux" style="width: 325px;" /></div>
 
 ???
 
@@ -100,19 +101,79 @@ Notes for the _first_ slide!
 
 ---
 
-# Introduction
+# What is High Performance Computing ?
 
-## What is High Performance Computing ?
-
+* More than your laptop or desktop (or high powered workstation)
+* Hardware architecture that fits your problem and available tools
+* Allows you to answer questions you couldn't with a typical computer
+* Faster iteration
 * Clusters, but not just clusters
-* High memory, high core count, bigdata, etc.
+* High memory, high core count, bigdata, machine learning, etc.
 
+---
+
+# Computer Architecture & Monitoring
+
+## Simple, stupid computer architecture diagram [inspired by Mark Richter] (https://www.redhat.com/en/about/blog/authors/marc-richter)
+```      |
+ CPU     | Memory
+         |
+-------------------
+         |
+ Network | Disk I/O
+         |
+```
+* These are the key areas to focus on for bottlenecks
 --
+# Monitoring
+* htop (or top)
+* iostat
+* iftop
 
-## Groups who provide HPC support
+There are other tools, but these will get you the basic info you need and are installed on most systems by default
+---
+
+# Terminology
+
+* HPC terminology can be confusing, sometimes the same words have different contextual meaning (e.g. threads)
+* When in doubt - ask
+
+## Terms
+
+* CPU related
+  * Processors
+  * Cores
+  * Threads
+  * Sockets
+  * Cache
+    * L2 (fastest)
+    * L3 (faster)
+* Memory related
+  * RAM / Memory (fast)
+  * SWAP (not so fast)
+  * NUMA (non uniform memory access)
+* Disk related
+  * Disk (HDD, SDD)
+  * I/O
+* Network related
+  * Infiniband / IB / Omnipath / Mellanox
+  * Gigabit
+* OS related
+  * Kernel
+* Software related
+  * Processes
+  * Threads
+  * Parallel
+  * MPI
+  * OpenMP
+  * SPMD, MIMD [Flynn's taxonomy](https://en.wikipedia.org/wiki/Flynn%27s_taxonomy)
+
+---
+
+# Groups who provide HPC support
 
 * [Research IT](http://rit.las.iastate.edu)
-    * Build software, run custom hardware, collaborate on issues, etc.
+    * Build software, run custom hardware, consult on performance improvements, etc.
     * Collaboration between LAS, CALS, IT, etc. http://rit.las.iastate.edu/people
     * researchit@iastate.edu
     * IRC (chat): &#35;bitcom on freenode
@@ -151,27 +212,67 @@ Notes for the _first_ slide!
 # Compute Resources at ISU
 
 ## [Custom hardware](http://rit.las.iastate.edu/hardware)
-* BioCrunch
-* BigRAM
-* Speedy
-* Speedy2
-* LASWIN01
-* Legion
+* BioCrunch (for multithreaded shared memory programs)
+    * 2.4GHz, 80 threads, 768GB of RAM
+* BigRAM (for large memory needs like de-novo assembly)
+    * 2.6GHz, 48 threads, 1.5TB of RAM
+* Speedy (for single threaded programs, like R)
+    * 3.4GHz, 24 threads, 256GB of RAM
+* Speedy2 (for single threaded programs, like R)
+    * 3.2GHz, 32 threads, 256GB of RAM
+* LASWIN01 (for Windows only software)
+    * 2.6GHz, 24 threads, 64GB of RAM
+* Legion (for massively parallel applications)
+    * 4 nodes
+    * 1.3GHz, 272 threads, 386GB of RAM (each)
 
 --
 
 ## [Xsede](https://www.xsede.org/)
 * ISU researchers have access to the national supercompute centers (e.g. TACC, PSC) via Xsede
+* For problems that need to scale larger than our on-campus resources
 * Contact campus champoins: Jim Coyle or Andrew Severin
 
 ---
 
-# UNIX for HPC
+# UNIX for HPC at Iowa State
 * RedHat Enterprise Linux 7 (current is 7.3)
+    * Powerful and high performance
+    * Supported and stable
+    * Common in industry
+
+--
+
 * Fedora is the upstream desktop distribution (good option to become familiar)
 * CentOS is the downstream server distribution
 * When you google linux questions, you'll inevitably get results for Ubuntu
     * sudo apt-get install *** will not work for you on our systems
+
+---
+
+# Software
+
+## Modules
+* We use modules to allow multiple people to use the same software with consistent, reproducible results
+* Modules keep your environment clean and free of conflicts (e.g. python2/3 or Java7/8)
+* Think of modules as a software library. You need to check out the software before you can use it.
+* We call our software library [RISA](https://researchit.las.iastate.edu/research-it-software-archive) (Research IT Software Archive), and sync it to hpc-class, condo, and all of our custom machines
+```
+$ module avail
+------------------------------------------------------------------ /opt/rit/modules ------------------------------------------------------------------
+abyss/1.5.2              freesurfer/5.3.0         lib/htslib/1.2.1         microbiomeutil/r20110519 rsem/1.2.22
+abyss/1.9.0              gapcloser/1.12-r6        lib/htslib/1.3           migrate-n/3.6.11         rsem/1.2.31
+afni/17.0.10             gapfiller/1-10           lib/htslib/1.3.2         mira/4.0.2               rtax/0.984
+albert/20170105          gatk/3.4-46              lib/ICE/1.0.9            mirdeep/2.0.0.7          ruby/2.3.0
+...
+```
+--
+* To use a module
+```
+$ module load abyss
+```
+* Default behavior is to load the latest version if not specified
+* Use 'module purge' to clear your environment before loading something different
 
 ---
 # Storage
@@ -184,6 +285,12 @@ Notes for the _first_ slide!
 * Use network storage such as my.files, box, github, etc.
 * Keep backups
 
+---
+# Job Scheduler
+
+
+---
+# Common stumbling blocks
 
 
 
