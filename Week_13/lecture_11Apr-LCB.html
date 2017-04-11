@@ -93,7 +93,7 @@
 class: center, middle
 
 # HPC
-<div style="text-align:center"><img src="images/captain-lionel-mandrake-high-performance-computing-or-how-i-learned-to-stop-worrying-and-love-linux.jpg" alt="High Performance Computer or: How I Learned to Stop Worrying and Love Linux" style="width: 325px;" /></div>
+<div style="text-align:center"><img src="images/captain-lionel-mandrake-high-performance-computing-or-how-i-learned-to-stop-worrying-and-love-linux.jpg" alt="High Performance Computer or: How I Learned to Stop Worrying and Love Linux"/></div>
 
 ???
 
@@ -114,7 +114,8 @@ Notes for the _first_ slide!
 
 # Computer Architecture & Monitoring
 
-## Simple, stupid computer architecture diagram [inspired by Mark Richter] (https://www.redhat.com/en/about/blog/authors/marc-richter)
+## Simple, stupid computer architecture diagram
+[inspired by Mark Richter] (https://www.redhat.com/en/about/blog/authors/marc-richter)
 ```      |
  CPU     | Memory
          |
@@ -124,8 +125,11 @@ Notes for the _first_ slide!
          |
 ```
 * These are the key areas to focus on for bottlenecks
+
 --
+
 # Monitoring
+
 * htop (or top)
 * iostat
 * iftop
@@ -152,6 +156,10 @@ There are other tools, but these will get you the basic info you need and are in
   * RAM / Memory (fast)
   * SWAP (not so fast)
   * NUMA (non uniform memory access)
+
+---
+# Terminology
+
 * Disk related
   * Disk (HDD, SDD)
   * I/O
@@ -160,6 +168,11 @@ There are other tools, but these will get you the basic info you need and are in
   * Gigabit
 * OS related
   * Kernel
+
+---
+
+# Terminology
+
 * Software related
   * Processes
   * Threads
@@ -226,7 +239,8 @@ There are other tools, but these will get you the basic info you need and are in
     * 4 nodes
     * 1.3GHz, 272 threads, 386GB of RAM (each)
 
---
+---
+#Compute Resources
 
 ## [Xsede](https://www.xsede.org/)
 * ISU researchers have access to the national supercompute centers (e.g. TACC, PSC) via Xsede
@@ -236,6 +250,7 @@ There are other tools, but these will get you the basic info you need and are in
 ---
 
 # UNIX for HPC at Iowa State
+
 * RedHat Enterprise Linux 7 (current is 7.3)
     * Powerful and high performance
     * Supported and stable
@@ -243,9 +258,10 @@ There are other tools, but these will get you the basic info you need and are in
 
 --
 
-* Fedora is the upstream desktop distribution (good option to become familiar)
-* CentOS is the downstream server distribution
+* [Fedora](https://getfedora.org/) is the upstream desktop distribution (good option to become familiar)
+* [CentOS](https://www.centos.org/) is the downstream server distribution
 * When you google linux questions, you'll inevitably get results for Ubuntu
+    * results can point you in the right direction, but interpret and understand - don't just copy & paste
     * sudo apt-get install *** will not work for you on our systems
 
 ---
@@ -266,7 +282,12 @@ afni/17.0.10             gapfiller/1-10           lib/htslib/1.3.2         mira/
 albert/20170105          gatk/3.4-46              lib/ICE/1.0.9            mirdeep/2.0.0.7          ruby/2.3.0
 ...
 ```
---
+
+---
+# Software
+
+## Modules
+
 * To use a module
 ```
 $ module load abyss
