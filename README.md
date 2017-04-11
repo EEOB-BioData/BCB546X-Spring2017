@@ -20,7 +20,7 @@ The topics covered in this course can all be found here: [Spring 2017 Schedule](
 Be sure to check the schedule for updates.
 
 **[Week 1](https://github.com/EEOB-BioData/BCB546X-Spring2017/tree/master/Week_1)**
- 
+
 * [Introduction](https://github.com/EEOB-BioData/BCB546X-Spring2017/blob/master/Week_1/Week1_Lecture1.pdf) (link to PDF)
 * [Unix Basics](https://github.com/EEOB-BioData/BCB546X-Spring2017/blob/master/Week_1/Week1_Lecture2.pdf) (link to PDF)
 
@@ -67,7 +67,7 @@ Be sure to check the schedule for updates.
 **[Week 11](https://github.com/EEOB-BioData/BCB546X-Spring2017/tree/master/Week_11)**
 
 * Overview of group projects
-* LaTeX [[slides LaTeX source](https://www.sharelatex.com/project/58d9b0d9b610a7f176ff5e81) or [PDF](https://github.com/EEOB-BioData/BCB546X-Spring2017/blob/master/Week_11/lecture_28Mar-TAH.pdf)] 
+* LaTeX [[slides LaTeX source](https://www.sharelatex.com/project/58d9b0d9b610a7f176ff5e81) or [PDF](https://github.com/EEOB-BioData/BCB546X-Spring2017/blob/master/Week_11/lecture_28Mar-TAH.pdf)]
 * [Working with Range Data](http://eeob-biodata.github.io/BCB546X-Spring2017/Week_11/lecture_30Mar-MBH.html)
 
 **[Week 12](https://github.com/EEOB-BioData/BCB546X-Spring2017/tree/master/Week_12)**
@@ -75,13 +75,17 @@ Be sure to check the schedule for updates.
 * [Working with Range Data continued](http://eeob-biodata.github.io/BCB546X-Spring2017/Week_12/lecture_04Apr-MBH.html#38)
 * [Working with Sequence Data](http://eeob-biodata.github.io/BCB546X-Spring2017/Week_12/lecture_06Apr-TAH.html)
 
+**[Week 13](https://github.com/EEOB-BioData/BCB546X-Spring2017/tree/master/Week_13)**
+
+* [HPC Part 1](http://eeob-biodata.github.io/BCB546X-Spring2017/Week_13/lecture_11Apr-LCB.html)
+
 
 
 ## Final Group Project
 
-The group projects will be due at the end of the semester during the last two class meetings, where each group will give a presentation on their work. 
+The group projects will be due at the end of the semester during the last two class meetings, where each group will give a presentation on their work.
 
-The description of the group project can be found here: 
+The description of the group project can be found here:
 
 [https://github.com/EEOB-BioData/BCB546X-Spring2017/tree/master/Group_Project](https://github.com/EEOB-BioData/BCB546X-Spring2017/tree/master/Group_Project)
 
