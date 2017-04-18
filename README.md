@@ -79,6 +79,10 @@ Be sure to check the schedule for updates.
 
 * [HPC Part 1](http://eeob-biodata.github.io/BCB546X-Spring2017/Week_13/lecture_11Apr-LCB.html)
 
+**[Week 14](https://github.com/EEOB-BioData/BCB546X-Spring2017/tree/master/Week_14)**
+
+* [Bioinformatics Shell Scripting](http://eeob-biodata.github.io/BCB546X-Spring2017/Week_14/lecture_18Apr-MBH.html)
+
 
 
 ## Final Group Project
