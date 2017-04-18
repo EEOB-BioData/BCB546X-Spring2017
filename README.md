@@ -93,5 +93,24 @@ The description of the group project can be found here:
 
 [https://github.com/EEOB-BioData/BCB546X-Spring2017/tree/master/Group_Project](https://github.com/EEOB-BioData/BCB546X-Spring2017/tree/master/Group_Project)
 
+### Presentation Schedule
+**April 25, Tuesday Presentations**
+
+Order    |    Group Name
+--------|---------------
+1    |    TBD
+2    |    PEB
+3    |    Elliot Rossow, Ali Kerwin & Joe Webb
+4    |    Emma Miller, Justin Conover, and Ching-Yi Liao
+
+**April 27, Thursday Presentations**
+
+Order    |    Group Name
+--------|---------------
+1    |    RNA-seekers
+2    |    Adaptation is RAD...seq
+3    |    Valerin
+4    |    Echincea
+
 ---
 <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br />Except where otherwise noted, content on this site is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
